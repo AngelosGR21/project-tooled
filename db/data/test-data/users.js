@@ -4,7 +4,8 @@ module.exports = [
     name: "Mike Oxlong",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7AE",
+    lat: 51.51561,
+    long: -0.0769,
     password: "password",
   },
   {
@@ -12,7 +13,8 @@ module.exports = [
     name: "Ader Titsoff",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7AF",
+    lat: 51.51603,
+    long: -0.07351,
     password: "password",
   },
   {
@@ -20,7 +22,8 @@ module.exports = [
     name: "Anita Dickenme",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7AW",
+    lat: 51.51563,
+    long: -0.07628,
     password: "password",
   },
   {
@@ -28,7 +31,8 @@ module.exports = [
     name: "Ben Derhover",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7AX",
+    lat: 51.51553,
+    long: -0.07859,
     password: "password",
   },
   {
@@ -36,7 +40,8 @@ module.exports = [
     name: "C. Mike Rack",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7BH",
+    lat: 51.51517,
+    long: -0.07761,
     password: "password",
   },
   {
@@ -44,7 +49,8 @@ module.exports = [
     name: "Harry Cox",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7BH",
+    lat: 51.5155,
+    long: -0.07681,
     password: "password",
   },
   {
@@ -52,7 +58,8 @@ module.exports = [
     name: "Ivana Tinkle",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
-    location: "E1 7BS",
+    lat: 51.5155,
+    long: -0.07681,
     password: "password",
   },
 ];

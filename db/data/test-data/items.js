@@ -9,7 +9,8 @@ module.exports = [
       "https://media.istockphoto.com/photos/cordless-power-drill-picture-id184290460?k=20&m=184290460&s=612x612&w=0&h=2SPZtNwffX2rudiiftl0UZzdE5ksoqhGeR7yzIJFDaM=",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7AE",
+    lat: 51.51561,
+    long: -0.0769,
   },
   {
     name: "Lawn mower",
@@ -21,7 +22,8 @@ module.exports = [
       "https://media.istockphoto.com/photos/man-using-a-lawn-mower-in-his-back-yard-picture-id1096126898?s=612x612",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7AF",
+    lat: 51.51603,
+    long: -0.07351,
   },
 
   {
@@ -34,7 +36,8 @@ module.exports = [
       "https://media.istockphoto.com/photos/computer-screen-showing-apple-event-logo-2020-on-the-screen-picture-id1283765199?s=612x612",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7AW",
+    lat: 51.51563,
+    long: -0.07628,
   },
   {
     name: "Cricket Bat",
@@ -46,7 +49,8 @@ module.exports = [
       "https://media.istockphoto.com/photos/wooden-cricket-bat-and-ball-on-a-white-background-picture-id505125296?s=612x612",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7AX",
+    lat: 51.51553,
+    long: -0.07859,
   },
   {
     name: "Violin",
@@ -58,7 +62,8 @@ module.exports = [
       "https://media.istockphoto.com/photos/single-wooden-cello-on-a-white-background-picture-id95655137?s=612x612",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7BH",
+    lat: 51.51517,
+    long: -0.07761,
   },
   {
     name: "Car",
@@ -70,7 +75,8 @@ module.exports = [
       "https://media.istockphoto.com/photos/volkswagen-polo-gti-plus-in-flash-red-paint-picture-id1227424903?s=612x612",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7BH",
+    lat: 51.5155,
+    long: -0.07681,
   },
   {
     name: "Water gun",
@@ -82,6 +88,7 @@ module.exports = [
       "https://media.istockphoto.com/photos/water-fight-with-my-dad-picture-id1190048038?k=20&m=1190048038&s=612x612&w=0&h=Z6FkNEj941Y1tOqD0SwSQo6HgRDTKQ5eMthRVL0EGd8=",
     created_at: new Date(),
     is_available: true,
-    location: "E1 7BS",
+    lat: 51.5155,
+    long: -0.07681,
   },
 ];
