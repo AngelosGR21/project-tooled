@@ -1,11 +1,11 @@
+const testData = require("../data/test-data/index.js");
 const db = require("../connection");
 const format = require("pg-format");
 const { createRef } = require("./utils");
 
-const defaultImageUrl = "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.salonlfc.com%2Fwp-content%2Fuploads%2F2018%2F01%2Fimage-not-found-1-scaled-1150x647.png&f=1&nofb=1";
-
-const seed = async (data) => {
-//   const { categoryData, commentData, itemData, userData, favouriteData } = data;
+const seed = async (testData) => {
+  const { categoryData, commentData, itemData, userData, favouriteData } =
+    testData;
   await db.query(`DROP TABLE IF EXISTS categories;`);
   await db.query(`DROP TABLE IF EXISTS comments;`);
   await db.query(`DROP TABLE IF EXISTS items;`);
@@ -56,7 +56,30 @@ const seed = async (data) => {
     user_id INT NOT NULL REFERENCES users(user_id),
     item_id INT NOT NULL REFERENCES items(item_id) 
   );`);
-  
+
+  const insertCategoriesQueryStr = format(
+    `INSERT INTO categories (category) VALUES %L RETURNING *;`,
+    categoryData.map(({ category }) => [category])
+  );
+
+  const categoriesPromise = await db
+    .query(insertCategoriesQueryStr)
+    .then((result) => result.rows);
+
+//   const insertCommentsQueryStr = format(
+//     `INSERT INTO comments (created_at, user_id, body, item_id)
+//         VALUES %L RETURNING *;`,
+//     commentData.map(({ created_at, user_id, body, item_id }) => [
+//       created_at,
+//       user_id,
+//       body,
+//       item_id,
+//     ])
+//   );
+
+//   const commentsPromise = await db
+//     .query(insertCommentsQueryStr)
+//     .then((result) => result.rows);
 };
 
-seed();
+module.exports = seed;
