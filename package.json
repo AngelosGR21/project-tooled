@@ -4,6 +4,7 @@
   "description": "Tooled",
   "main": "index.js",
   "scripts": {
+    "setup-dbs": "psql -f ./db/setup.sql",
     "test": "jest",
     "prepare": "husky install"
   },
