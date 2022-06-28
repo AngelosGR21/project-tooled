@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     created_at: new Date(),
     user_id: 1,
