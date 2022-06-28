@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS tooled_test;
+DROP DATABASE IF EXISTS tooled;
+
+CREATE DATABASE tooled_test;
+CREATE DATABASE tooled;
