@@ -4,13 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const pg_1 = require("pg");
-// process.env.PGDATABASE = "tooled"
-// process.env.PGPASSWORD = "thisismyfinalpassword"
+const ENV = process.env.NODE_ENV || "development";
 const dotenv_1 = __importDefault(require("dotenv"));
+console.log(ENV);
 dotenv_1.default.config({
-    path: `${process.env}`,
+    path: `${__dirname}/../../.env.${ENV}`,
 });
-console.log(process.env.PGDATABASE);
+console.log(`${__dirname}/../../.env.${ENV}`);
 if (!process.env.PGDATABASE) {
     throw new Error("PGDATABASE not set");
 }
