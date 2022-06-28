@@ -1,4 +1,4 @@
-module.exports = [
+export default [
   {
     name: "Drill",
     price: 2000,

@@ -1,16 +1,14 @@
-const testData = require("../data/test-data/index.js");
-const db = require("../connection");
-const format = require("pg-format");
-const { createRef } = require("./utils");
+import db from "../connection";
+import format from "pg-format";
+import { Data, CategoryData } from "./types-seed";
 
-const seed = async (testData) => {
-  const { categoryData, commentData, itemData, userData, favouriteData } =
-    testData;
-  await db.query(`DROP TABLE IF EXISTS categories;`);
-  await db.query(`DROP TABLE IF EXISTS comments;`);
-  await db.query(`DROP TABLE IF EXISTS items;`);
-  await db.query(`DROP TABLE IF EXISTS users;`);
-  await db.query(`DROP TABLE IF EXISTS favourites;`);
+const seed = async (data: Data) => {
+  const { categoryData, commentData, itemData, userData, favouriteData } = data;
+  await db.query("DROP TABLE IF EXISTS categories;");
+  await db.query("DROP TABLE IF EXISTS comments;");
+  await db.query("DROP TABLE IF EXISTS items;");
+  await db.query("DROP TABLE IF EXISTS users;");
+  await db.query("DROP TABLE IF EXISTS favourites;");
 
   await db.query(`CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
@@ -58,13 +56,11 @@ const seed = async (testData) => {
   );`);
 
   const insertCategoriesQueryStr = format(
-    `INSERT INTO categories (category) VALUES %L RETURNING *;`,
+    "INSERT INTO categories (category) VALUES %L RETURNING *;",
     categoryData.map(({ category }) => [category])
   );
 
-  const categoriesPromise = await db
-    .query(insertCategoriesQueryStr)
-    .then((result) => result.rows);
+  await db.query(insertCategoriesQueryStr).then((result) => result.rows);
 
   const insertUsersQueryStr = format(
     "INSERT INTO users ( username, name, avatar, lat,long,password) VALUES %L RETURNING *;",
@@ -78,9 +74,7 @@ const seed = async (testData) => {
     ])
   );
 
-  const usersPromise = await db
-    .query(insertUsersQueryStr)
-    .then((result) => result.rows);
+  await db.query(insertUsersQueryStr).then((result) => result.rows);
 
   const insertItemsQueryStr = format(
     "INSERT INTO items (name, price, body, user_id, category_id, item_image, created_at, is_available, lat, long ) VALUES %L RETURNING *;",
@@ -111,9 +105,7 @@ const seed = async (testData) => {
     )
   );
 
-  const itemsPromise = await db
-    .query(insertItemsQueryStr)
-    .then((result) => result.rows);
+  await db.query(insertItemsQueryStr).then((result) => result.rows);
 
   const insertCommentsQueryStr = format(
     `INSERT INTO comments (created_at, user_id, body, item_id)
@@ -126,18 +118,14 @@ const seed = async (testData) => {
     ])
   );
 
-  const commentsPromise = await db
-    .query(insertCommentsQueryStr)
-    .then((result) => result.rows);
+  await db.query(insertCommentsQueryStr).then((result) => result.rows);
 
   const insertFavouritesQueryStr = format(
-    `INSERT INTO favourites ( user_id, item_id ) VALUES %L RETURNING *;`,
-    commentData.map(({ user_id, item_id }) => [user_id, item_id])
+    "INSERT INTO favourites ( user_id, item_id ) VALUES %L RETURNING *;",
+    favouriteData.map(({ user_id, item_id }) => [user_id, item_id])
   );
 
-  const favouritesPromise = await db
-    .query(insertFavouritesQueryStr)
-    .then((result) => result.rows);
+  await db.query(insertFavouritesQueryStr).then((result) => result.rows);
 };
 
-module.exports = seed;
+export default seed;
