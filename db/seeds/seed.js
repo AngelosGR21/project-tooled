@@ -22,7 +22,7 @@ const seed = async (testData) => {
     username VARCHAR UNIQUE,
     name VARCHAR NOT NULL,
     avatar VARCHAR,
-    average_review INT,
+    average_review INT DEFAULT 0 NOT NULL,
     lat VARCHAR,
     long VARCHAR,
     password VARCHAR
@@ -66,20 +66,78 @@ const seed = async (testData) => {
     .query(insertCategoriesQueryStr)
     .then((result) => result.rows);
 
-//   const insertCommentsQueryStr = format(
-//     `INSERT INTO comments (created_at, user_id, body, item_id)
-//         VALUES %L RETURNING *;`,
-//     commentData.map(({ created_at, user_id, body, item_id }) => [
-//       created_at,
-//       user_id,
-//       body,
-//       item_id,
-//     ])
-//   );
+  const insertUsersQueryStr = format(
+    "INSERT INTO users ( username, name, avatar, lat,long,password) VALUES %L RETURNING *;",
+    userData.map(({ username, name, avatar, lat, long, password }) => [
+      username,
+      name,
+      avatar,
+      lat,
+      long,
+      password,
+    ])
+  );
 
-//   const commentsPromise = await db
-//     .query(insertCommentsQueryStr)
-//     .then((result) => result.rows);
+  const usersPromise = await db
+    .query(insertUsersQueryStr)
+    .then((result) => result.rows);
+
+  const insertItemsQueryStr = format(
+    "INSERT INTO items (name, price, body, user_id, category_id, item_image, created_at, is_available, lat, long ) VALUES %L RETURNING *;",
+    itemData.map(
+      ({
+        name,
+        price,
+        body,
+        user_id,
+        category_id,
+        item_image,
+        created_at,
+        is_available,
+        lat,
+        long,
+      }) => [
+        name,
+        price,
+        body,
+        user_id,
+        category_id,
+        item_image,
+        created_at,
+        is_available,
+        lat,
+        long,
+      ]
+    )
+  );
+
+  const itemsPromise = await db
+    .query(insertItemsQueryStr)
+    .then((result) => result.rows);
+
+  const insertCommentsQueryStr = format(
+    `INSERT INTO comments (created_at, user_id, body, item_id)
+          VALUES %L RETURNING *;`,
+    commentData.map(({ created_at, user_id, body, item_id }) => [
+      created_at,
+      user_id,
+      body,
+      item_id,
+    ])
+  );
+
+  const commentsPromise = await db
+    .query(insertCommentsQueryStr)
+    .then((result) => result.rows);
+
+  const insertFavouritesQueryStr = format(
+    `INSERT INTO favourites ( user_id, item_id ) VALUES %L RETURNING *;`,
+    commentData.map(({ user_id, item_id }) => [user_id, item_id])
+  );
+
+  const favouritesPromise = await db
+    .query(insertFavouritesQueryStr)
+    .then((result) => result.rows);
 };
 
 module.exports = seed;
