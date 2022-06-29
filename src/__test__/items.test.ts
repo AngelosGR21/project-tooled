@@ -83,6 +83,15 @@ describe("API: /api/items", () => {
         })
     });
 
+    test('400: responds with bad request message when passed invalid sort_by', () => {
+      return request(app)
+        .get("/api/items?sort_by=oranges")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Invalid sort by");
+        });
+    });
+
   });
   describe("GET: /api/items/:item_id", () => {
     test("200: responds with a item object", () => {
