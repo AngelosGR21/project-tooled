@@ -28,4 +28,14 @@ describe("API: /api/categories", () => {
         });
     });
   });
+  describe("GET - errors: /api/categories", () => {
+    test("404: responds with error message", () => {
+      return request(app)
+        .get("/api/invalid_categories")
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid endpoint");
+        });
+    });
+  });
 });
