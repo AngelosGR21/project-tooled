@@ -7,7 +7,7 @@ export default [
     category_id: 1,
     item_image:
       "https://media.istockphoto.com/photos/cordless-power-drill-picture-id184290460?k=20&m=184290460&s=612x612&w=0&h=2SPZtNwffX2rudiiftl0UZzdE5ksoqhGeR7yzIJFDaM=",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51561,
     long: -0.0769,
@@ -20,7 +20,7 @@ export default [
     category_id: 2,
     item_image:
       "https://media.istockphoto.com/photos/man-using-a-lawn-mower-in-his-back-yard-picture-id1096126898?s=612x612",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51603,
     long: -0.07351,
@@ -34,7 +34,7 @@ export default [
     category_id: 3,
     item_image:
       "https://media.istockphoto.com/photos/computer-screen-showing-apple-event-logo-2020-on-the-screen-picture-id1283765199?s=612x612",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51563,
     long: -0.07628,
@@ -47,7 +47,7 @@ export default [
     category_id: 4,
     item_image:
       "https://media.istockphoto.com/photos/wooden-cricket-bat-and-ball-on-a-white-background-picture-id505125296?s=612x612",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51553,
     long: -0.07859,
@@ -60,7 +60,7 @@ export default [
     category_id: 5,
     item_image:
       "https://media.istockphoto.com/photos/single-wooden-cello-on-a-white-background-picture-id95655137?s=612x612",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51517,
     long: -0.07761,
@@ -73,7 +73,7 @@ export default [
     category_id: 6,
     item_image:
       "https://media.istockphoto.com/photos/volkswagen-polo-gti-plus-in-flash-red-paint-picture-id1227424903?s=612x612",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.5155,
     long: -0.07681,
@@ -86,7 +86,7 @@ export default [
     category_id: 7,
     item_image:
       "https://media.istockphoto.com/photos/water-fight-with-my-dad-picture-id1190048038?k=20&m=1190048038&s=612x612&w=0&h=Z6FkNEj941Y1tOqD0SwSQo6HgRDTKQ5eMthRVL0EGd8=",
-    created_at: new Date(),
+    created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.5155,
     long: -0.07681,
