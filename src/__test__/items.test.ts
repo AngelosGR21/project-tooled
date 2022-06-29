@@ -92,6 +92,23 @@ describe("API: /api/items", () => {
         });
     });
 
+    test.only("200: responds with an items filtered by the category value specified in the query", () => {
+      return request(app)
+        .get("/api/items?category=Vehicles")
+        .expect(200)
+        .then(({ body: { items } }) => {
+          expect(items).toBeInstanceOf(Array);
+          expect(items).not.toHaveLength(0);
+          items.forEach((item: Item) => {
+            expect(item).toEqual(
+              expect.objectContaining({
+                category: "Vehicles",
+              })
+            );
+          });
+        });
+    });
+
   });
   describe("GET: /api/items/:item_id", () => {
     test("200: responds with a item object", () => {
