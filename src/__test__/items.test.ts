@@ -7,84 +7,83 @@ import { Item } from "./types-test";
 import 'jest-sorted';
 
 afterAll(() => {
-    db.end();
+  db.end();
 })
 
 beforeEach(() => seed(testData));
 
-describe('GET /api/items', () => {
+describe("API: /api/items", () => {
+  describe('GET /api/items', () => {
     test('200: responds with an items array of items objects (sorted by date in descending order)', () => {
-        return request(app)
-            .get("/api/items")
-            .expect(200)
-            .then(({ body: { items } }) => {
-                expect(items).toBeInstanceOf(Array);
-                expect(items).not.toHaveLength(0);
-                expect(items).toBeSortedBy("created_at", { descending: true });
-                items.forEach((item: Item) => {
-                    expect(item).toEqual(
-                        expect.objectContaining({
-                            item_id: expect.any(Number),
-                            name: expect.any(String),
-                            price: expect.any(Number),
-                            body: expect.any(String),
-                            user_id: expect.any(Number),
-                            category_id: expect.any(Number),
-                            item_image: expect.any(String),
-                            created_at: expect.any(String),
-                            is_available: expect.any(Boolean),
-                            rating: expect.any(Number),
-                            lat: expect.any(String),
-                            long: expect.any(String)
-                        })
-                    )
-                })
-            })
+      return request(app)
+        .get("/api/items")
+        .expect(200)
+        .then(({ body: { items } }) => {
+          expect(items).toBeInstanceOf(Array);
+          expect(items).not.toHaveLength(0);
+          expect(items).toBeSortedBy("created_at", { descending: true });
+          items.forEach((item: Item) => {
+            expect(item).toEqual(
+              expect.objectContaining({
+                item_id: expect.any(Number),
+                name: expect.any(String),
+                price: expect.any(Number),
+                body: expect.any(String),
+                user_id: expect.any(Number),
+                category_id: expect.any(Number),
+                item_image: expect.any(String),
+                created_at: expect.any(String),
+                is_available: expect.any(Boolean),
+                rating: expect.any(Number),
+                lat: expect.any(String),
+                long: expect.any(String)
+              })
+            )
+          })
+        })
     });
 
     test('200: responds with an items array of items objects which sorted by any valid column', () => {
-        return request(app)
-            .get("/api/items?sort_by=price&order=asc")
-            .expect(200)
-            .then(({ body: { items } }) => {
-                expect(items).toBeInstanceOf(Array);
-                expect(items).not.toHaveLength(0);
-                expect(items).toBeSortedBy("price", { descending: false });
-            })
+      return request(app)
+        .get("/api/items?sort_by=price&order=asc")
+        .expect(200)
+        .then(({ body: { items } }) => {
+          expect(items).toBeInstanceOf(Array);
+          expect(items).not.toHaveLength(0);
+          expect(items).toBeSortedBy("price", { descending: false });
+        })
     });
 
     test('200: responds with an items array of items objects which sorted by any valid column and default descending order when passed invalid order', () => {
-        return request(app)
-            .get("/api/items?sort_by=price&order=random")
-            .expect(200)
-            .then(({ body: { items } }) => {
-                expect(items).toBeInstanceOf(Array);
-                expect(items).not.toHaveLength(0);
-                expect(items).toBeSortedBy("created_at", { descending: true });
-                items.forEach((item: Item) => {
-                    expect(item).toEqual(
-                        expect.objectContaining({
-                            item_id: expect.any(Number),
-                            name: expect.any(String),
-                            price: expect.any(Number),
-                            body: expect.any(String),
-                            user_id: expect.any(Number),
-                            category_id: expect.any(Number),
-                            item_image: expect.any(String),
-                            created_at: expect.any(String),
-                            is_available: expect.any(Boolean),
-                            rating: expect.any(Number),
-                            lat: expect.any(String),
-                            long: expect.any(String)
-                        })
-                    )
-                })
-            })
+      return request(app)
+        .get("/api/items?sort_by=price&order=random")
+        .expect(200)
+        .then(({ body: { items } }) => {
+          expect(items).toBeInstanceOf(Array);
+          expect(items).not.toHaveLength(0);
+          expect(items).toBeSortedBy("created_at", { descending: true });
+          items.forEach((item: Item) => {
+            expect(item).toEqual(
+              expect.objectContaining({
+                item_id: expect.any(Number),
+                name: expect.any(String),
+                price: expect.any(Number),
+                body: expect.any(String),
+                user_id: expect.any(Number),
+                category_id: expect.any(Number),
+                item_image: expect.any(String),
+                created_at: expect.any(String),
+                is_available: expect.any(Boolean),
+                rating: expect.any(Number),
+                lat: expect.any(String),
+                long: expect.any(String)
+              })
+            )
+          })
+        })
     });
 
-});
-
-describe("API: /api/items", () => {
+  });
   describe("GET: /api/items/:item_id", () => {
     test("200: responds with a item object", () => {
       const item_id = 1;
