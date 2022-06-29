@@ -1,13 +1,13 @@
 import db from "../db/connection";
 
 export const fetchItemById = async (item_id: string) => {
-  const reviewQueryStr = `
+  const itemQueryStr = `
     SELECT * 
     FROM items
     WHERE item_id = $1
 `;
-  const reviewValue = [item_id];
-  const { rows } = await db.query(reviewQueryStr, reviewValue);
+  const itemValue = [item_id];
+  const { rows } = await db.query(itemQueryStr, itemValue);
 
   if (!rows.length) {
     return Promise.reject({
