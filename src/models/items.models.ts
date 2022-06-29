@@ -1,10 +1,19 @@
 import db from "../db/connection";
 
-export const fetchItems = async (sort_by: string = "price", order: string = "desc") => {
+export const fetchItems = async (sort_by: string = "price", order: string = "desc", category: string) => {
   const validSortBy = ["price", "rating"];
   const validOrder = ["asc", "desc"];
 
-  let queryStr = `SELECT * FROM items`;
+  let queryStr = `SELECT * FROM items 
+                  LEFT JOIN categories 
+                  ON categories.category_id = items.category_id`;
+
+  const categoryVal = [];
+
+  if (category) {
+    queryStr += ` WHERE category = $1`;
+    categoryVal.push(category);
+  }  
 
   if (validSortBy.includes(sort_by)) {
     queryStr += ` ORDER BY ${sort_by}`;
@@ -18,7 +27,7 @@ export const fetchItems = async (sort_by: string = "price", order: string = "des
     });
 
   try {
-    const { rows } = await db.query(queryStr);
+    const { rows } = await db.query(queryStr, categoryVal);
     return rows;
   } catch (error) {
     return Promise.reject(error);
