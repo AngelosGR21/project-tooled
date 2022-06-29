@@ -92,7 +92,7 @@ describe("API: /api/items", () => {
         });
     });
 
-    test.only("200: responds with an items filtered by the category value specified in the query", () => {
+    test("200: responds with an items filtered by the category value specified in the query", () => {
       return request(app)
         .get("/api/items?category=Vehicles")
         .expect(200)
