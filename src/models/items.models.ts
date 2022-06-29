@@ -1,24 +1,28 @@
 import db from "../db/connection";
 
 export const fetchItems = async (sort_by: string = "price", order: string = "desc") => {
-    const validSortBy = ["price", "rating"];
-    const validOrder = ["asc", "desc"];
-    
-    let queryStr = `SELECT * FROM items`;
+  const validSortBy = ["price", "rating"];
+  const validOrder = ["asc", "desc"];
 
-    if (validSortBy.includes(sort_by)) {
-        queryStr += ` ORDER BY ${sort_by}`;
-        if (validOrder.includes(order)) {
-            queryStr += ` ${order}`;
-        } else queryStr += ` DESC`;
-    }
-    
-    try {
-        const { rows } = await db.query(queryStr);
-        return rows;
-    } catch (error) {
-        return Promise.reject(error);
-    }
+  let queryStr = `SELECT * FROM items`;
+
+  if (validSortBy.includes(sort_by)) {
+    queryStr += ` ORDER BY ${sort_by}`;
+    if (validOrder.includes(order)) {
+      queryStr += ` ${order}`;
+    } else queryStr += ` DESC`;
+  } else
+    return Promise.reject({
+      status: 400,
+      message: "Invalid sort by",
+    });
+
+  try {
+    const { rows } = await db.query(queryStr);
+    return rows;
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const fetchItemById = async (item_id: string) => {
