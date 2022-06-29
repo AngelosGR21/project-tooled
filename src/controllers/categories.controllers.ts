@@ -4,7 +4,7 @@ import { Category } from "../__test__/types-test";
 
 export const getAllCategories = (
   req: Request,
-  res: Response,
+  res: Response<{ categories: Category[] }>,
   next: NextFunction
 ) => {
   fetchAllCategories()
