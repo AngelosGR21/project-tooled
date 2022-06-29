@@ -1,20 +1,30 @@
 import { Request, Response, NextFunction } from "express";
 import { Item } from "../__test__/types-test";
-import fetchItems from "../models/items.models";
+import { fetchItems, fetchItemById } from "../models/items.models";
 
-const getItems = (
+export const getItems = (
     req: Request<{}, {}, {}, {sort_by: string, order: string}>,
     res: Response<{items: Item[]}>,
     next: NextFunction
 ) => {
     const { sort_by, order } = req.query;
     fetchItems(sort_by, order)
-        .then((items) => {
+        .then((items: Item[]) => {
             res.status(200).send({ items });
         })
-        .catch((err) => {
-            next(err);
-        });
+        .catch(next);
 };
 
-export default getItems;
+export const getItemById = (
+  req: Request,
+  res: Response<{ items: Item[] }>,
+  next: NextFunction
+) => {
+  const { item_id } = req.params;
+
+  fetchItemById(item_id)
+    .then((items: Item[]) => {
+      res.status(200).send({ items });
+    })
+    .catch(next);
+};

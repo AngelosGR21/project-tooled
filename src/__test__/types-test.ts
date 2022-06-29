@@ -12,3 +12,9 @@ export interface Item {
     lat: number;
     long: number;
   };
+  
+export interface Category {
+  category: string;
+  category_id: number;
+}
+
