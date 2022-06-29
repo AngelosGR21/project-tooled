@@ -109,6 +109,15 @@ describe("API: /api/items", () => {
         });
     });
 
+    test("200: responds with an empty array when passed category is not in database", () => {
+      return request(app)
+        .get("/api/items?category=categoryNotInDatabase")
+        .expect(200)
+        .then(({ body: { items } }) => {
+          expect(items).toEqual([]);
+        });
+    });
+
   });
   describe("GET: /api/items/:item_id", () => {
     test("200: responds with a item object", () => {
