@@ -17,8 +17,6 @@ const fetchItems = async (sort_by: string = "price", order: string = "desc") => 
         const { rows } = await db.query(queryStr);
         return rows;
     } catch (error) {
-        console.log(error);
-        
         return Promise.reject(error);
     }
 };
