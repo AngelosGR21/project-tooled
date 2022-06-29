@@ -1,5 +1,9 @@
 import express, { Application, Request, Response } from "express";
-import { internalServerErrorHandler } from "./middleware/error.middleware";
+import {
+  handleCustomError,
+  handlePSQLError,
+  handleServerError,
+} from "./middleware/error.middleware";
 import apiRouter from "./routers/api.router";
 import categoriesRouter from "./routers/categories.router";
 import itemsRouter from "./routers/items.router";
@@ -14,7 +18,10 @@ app.use("/api/items", itemsRouter);
 app.use("/*", (req: Request, res: Response) => {
   res.status(404).send({ message: "invalid endpoint" });
 });
-app.use(internalServerErrorHandler);
+
+app.use(handlePSQLError);
+app.use(handleCustomError);
+app.use(handleServerError);
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`);

@@ -15,8 +15,6 @@ describe("API: /api/items", () => {
         .get(`/api/items/${item_id}`)
         .expect(200)
         .then(({ body: { items } }) => {
-          console.log(items, "<<test");
-
           expect(items).toBeInstanceOf(Object);
           expect(items).toEqual(
             expect.objectContaining({
@@ -35,6 +33,26 @@ describe("API: /api/items", () => {
               rating: 0,
             })
           );
+        });
+    });
+  });
+  describe("GET - errors: /api/items/:item_id", () => {
+    test("400: responds with an error message when passed an invalid endpoint", () => {
+      const item_id = "invalid_type";
+      return request(app)
+        .get(`/api/items/${item_id}`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is not valid");
+        });
+    });
+    test("404: responds with an error message when passed an endpoint with correct data type but does not exist", () => {
+      const item_id = 999;
+      return request(app)
+        .get(`/api/items/${item_id}`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`item does not exist`);
         });
     });
   });
