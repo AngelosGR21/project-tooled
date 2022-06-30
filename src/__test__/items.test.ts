@@ -223,7 +223,7 @@ describe("API: /api/items", () => {
         });
     });
   });
-  describe.only("POST: /api/items/:item_id/comments", () => {
+  describe("POST: /api/items/:item_id/comments", () => {
     test("201: responds with new comment", () => {
       const item_id = 1;
       const newComment = {
@@ -237,6 +237,52 @@ describe("API: /api/items", () => {
         .expect(201)
         .then(({ body: { comment } }) => {
           expect(comment).toEqual(newComment);
+        });
+    });
+  });
+  describe("POST - errors: /api/items/:item_id/comments", () => {
+    test("400: responds with error message when body does not contain mandatory keys ", () => {
+      const item_id = 1;
+      const newComment = {
+        notUser_id: "invalid_author",
+        notBody: "invalid_body",
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is missing");
+        });
+    });
+
+    test("404: responds with error message when item_id in path does not exist", () => {
+      const item_id = 999;
+      const newComment = {
+        body: "This is a cool game",
+        user_id: 3,
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input does not exist");
+        });
+    });
+
+    test("404: responds with error message when user_id does not exist", () => {
+      const item_id = 2;
+      const newComment = {
+        body: "This is a cool game",
+        user_id: 199099,
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input does not exist");
         });
     });
   });
