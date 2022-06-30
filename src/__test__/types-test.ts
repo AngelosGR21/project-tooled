@@ -20,3 +20,10 @@ export interface Item {
   lat: number;
   long: number;
 }
+
+export type Comment = {
+  created_at: Date;
+  user_id: number;
+  body: string;
+  item_id: number;
+};

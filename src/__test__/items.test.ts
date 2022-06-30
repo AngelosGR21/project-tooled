@@ -3,6 +3,7 @@ import testData from "../db/data/test-data";
 import request from "supertest";
 import app from "../app";
 import db from "../db/connection";
+import { Comment } from "./types-test";
 
 beforeEach(() => seed(testData));
 afterAll(() => db.end());
@@ -53,6 +54,31 @@ describe("API: /api/items", () => {
         .expect(404)
         .then(({ body: { message } }) => {
           expect(message).toBe(`item does not exist`);
+        });
+    });
+  });
+
+  describe("GET: /api/items/:item_id/comment", () => {
+    test("200: responds with a comment object", () => {
+      const item_id = 3;
+
+      return request(app)
+        .get(`/api/items/${item_id}/comments`)
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toHaveLength(2);
+          expect(comments).toBeInstanceOf(Array);
+          comments.forEach((comment: Comment) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                user_id: expect.any(Number),
+                body: expect.any(String),
+                item_id: expect.any(Number),
+                created_at: expect.any(String),
+              })
+            );
+          });
         });
     });
   });
