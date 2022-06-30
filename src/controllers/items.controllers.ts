@@ -2,6 +2,7 @@ import {
   fetchItems,
   fetchItemById,
   fetchItemCommentById,
+  insertItemCommentById,
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
 import { Comment, Item } from "../__test__/types-test";
@@ -48,6 +49,21 @@ export const getItemCommentById = (
   fetchItemCommentById(item_id)
     .then((comments: Comment[]) => {
       res.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+export const postItemCommentById = (
+  req: Request,
+  res: Response<{ comment: Comment }>,
+  next: NextFunction
+) => {
+  const { body } = req;
+  const { item_id } = req.params;
+
+  insertItemCommentById(body, item_id)
+    .then((comment: Comment) => {
+      res.status(201).send({ comment });
     })
     .catch(next);
 };

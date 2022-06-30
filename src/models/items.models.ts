@@ -1,6 +1,11 @@
 import db from "../db/connection";
+import { CommentBody } from "../__test__/types-test";
 
-export const fetchItems = async (sort_by: string = "price", order: string = "desc", category: string) => {
+export const fetchItems = async (
+  sort_by: string = "price",
+  order: string = "desc",
+  category: string
+) => {
   const validSortBy = ["price", "rating"];
   const validOrder = ["asc", "desc"];
 
@@ -13,7 +18,7 @@ export const fetchItems = async (sort_by: string = "price", order: string = "des
   if (category) {
     queryStr += ` WHERE category = $1`;
     categoryVal.push(category);
-  }  
+  }
 
   if (validSortBy.includes(sort_by)) {
     queryStr += ` ORDER BY ${sort_by}`;
@@ -63,4 +68,19 @@ export const fetchItemCommentById = async (item_id: string) => {
   const { rows } = await db.query(commentQueryStr, commentValue);
 
   return rows;
+};
+
+export const insertItemCommentById = async (
+  { user_id, body }: CommentBody,
+  item_id: string
+) => {
+  const commentQueryStr = `
+    INSERT INTO comments (user_id, body, item_id)
+    VALUES ($1, $2, $3)
+    RETURNING user_id, body`;
+  const commentValue = [user_id, body, item_id];
+
+  const { rows } = await db.query(commentQueryStr, commentValue);
+
+  return rows[0];
 };
