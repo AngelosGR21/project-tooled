@@ -8,12 +8,13 @@ import apiRouter from "./routers/api.router";
 import categoriesRouter from "./routers/categories.router";
 import itemsRouter from "./routers/items.router";
 const PORT = 5000;
+
 const app: Application = express();
+app.use(express.json());
 
 app.use("/api", apiRouter);
-app.use("/api/categories", categoriesRouter);
-
 app.use("/api/items", itemsRouter);
+app.use("/api/categories", categoriesRouter);
 
 app.use("/*", (req: Request, res: Response) => {
   res.status(404).send({ message: "invalid endpoint" });
