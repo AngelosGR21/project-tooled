@@ -91,17 +91,17 @@ const seed = async (data: Data) => {
         lat,
         long,
       }) => [
-        name,
-        price,
-        body,
-        user_id,
-        category_id,
-        item_image,
-        created_at,
-        is_available,
-        lat,
-        long,
-      ]
+          name,
+          price,
+          body,
+          user_id,
+          category_id,
+          item_image,
+          created_at,
+          is_available,
+          lat,
+          long,
+        ]
     )
   );
 
