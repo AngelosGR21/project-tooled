@@ -81,6 +81,7 @@ describe("API: /api/items", () => {
           });
         });
     });
+
     test("200: responds with a empty comment array when item exists but no comment posted", () => {
       const item_id = 1;
 
@@ -90,6 +91,29 @@ describe("API: /api/items", () => {
         .then(({ body: { comments } }) => {
           expect(comments).toBeInstanceOf(Object);
           expect(comments).toEqual([]);
+        });
+    });
+  });
+  describe("GET - errors: /api/items/:item_id/comments", () => {
+    test("400: responds with an error message when passed an invalid endpoint", () => {
+      const item_id = "invalid_id";
+
+      return request(app)
+        .get(`/api/items/${item_id}/comments`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is not valid");
+        });
+    });
+
+    test("404:responds with an error message when passed an endpoint with correct data type but does not exist", () => {
+      const item_id = 999;
+
+      return request(app)
+        .get(`/api/${item_id}/comments`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid endpoint");
         });
     });
   });
