@@ -4,7 +4,7 @@ import {
   getItemById,
   getItemCommentById,
   getItems,
-  postItemCommentById,
+  postCommentByItemId,
 } from "../controllers/items.controllers";
 
 const itemsRouter = Router();
@@ -14,6 +14,6 @@ itemsRouter.route("/:item_id").get(getItemById);
 itemsRouter
   .route("/:item_id/comments")
   .get(getItemCommentById)
-  .post(postItemCommentById);
+  .post(postCommentByItemId);
 
 export default itemsRouter;

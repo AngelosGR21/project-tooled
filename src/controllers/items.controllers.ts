@@ -2,10 +2,10 @@ import {
   fetchItems,
   fetchItemById,
   fetchItemCommentById,
-  insertItemCommentById,
+  insertCommentByItemId,
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
-import { Comment, Item } from "../__test__/types-test";
+import { Comment, CommentBody, Item } from "../__test__/types-test";
 
 export const getItems = (
   req: Request<
@@ -53,15 +53,15 @@ export const getItemCommentById = (
     .catch(next);
 };
 
-export const postItemCommentById = (
-  req: Request,
+export const postCommentByItemId = (
+  req: Request<{ item_id: string }, {}, CommentBody>,
   res: Response<{ comment: Comment }>,
   next: NextFunction
 ) => {
   const { body } = req;
   const { item_id } = req.params;
 
-  insertItemCommentById(body, item_id)
+  insertCommentByItemId(body, item_id)
     .then((comment: Comment) => {
       res.status(201).send({ comment });
     })

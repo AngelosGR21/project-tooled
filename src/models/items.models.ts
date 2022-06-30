@@ -70,7 +70,7 @@ export const fetchItemCommentById = async (item_id: string) => {
   return rows;
 };
 
-export const insertItemCommentById = async (
+export const insertCommentByItemId = async (
   { user_id, body }: CommentBody,
   item_id: string
 ) => {
