@@ -223,4 +223,21 @@ describe("API: /api/items", () => {
         });
     });
   });
+  describe.only("POST: /api/items/:item_id/comments", () => {
+    test("201: responds with new comment", () => {
+      const item_id = 1;
+      const newComment = {
+        body: "This is a cool game",
+        user_id: 3,
+      };
+
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment).toEqual(newComment);
+        });
+    });
+  });
 });
