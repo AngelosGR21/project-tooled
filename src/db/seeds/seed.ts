@@ -4,11 +4,11 @@ import { Data, CategoryData } from "./types-seed";
 
 const seed = async (data: Data) => {
   const { categoryData, commentData, itemData, userData, favouriteData } = data;
-  await db.query("DROP TABLE IF EXISTS categories;");
   await db.query("DROP TABLE IF EXISTS comments;");
-  await db.query("DROP TABLE IF EXISTS items;");
-  await db.query("DROP TABLE IF EXISTS users;");
   await db.query("DROP TABLE IF EXISTS favourites;");
+  await db.query("DROP TABLE IF EXISTS items;");
+  await db.query("DROP TABLE IF EXISTS categories;");
+  await db.query("DROP TABLE IF EXISTS users;");
 
   await db.query(`CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
@@ -91,17 +91,17 @@ const seed = async (data: Data) => {
         lat,
         long,
       }) => [
-        name,
-        price,
-        body,
-        user_id,
-        category_id,
-        item_image,
-        created_at,
-        is_available,
-        lat,
-        long,
-      ]
+          name,
+          price,
+          body,
+          user_id,
+          category_id,
+          item_image,
+          created_at,
+          is_available,
+          lat,
+          long,
+        ]
     )
   );
 
