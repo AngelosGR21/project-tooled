@@ -81,5 +81,16 @@ describe("API: /api/items", () => {
           });
         });
     });
+    test("200: responds with a empty comment array when item exists but no comment posted", () => {
+      const item_id = 1;
+
+      return request(app)
+        .get(`/api/items/${item_id}/comments`)
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toBeInstanceOf(Object);
+          expect(comments).toEqual([]);
+        });
+    });
   });
 });
