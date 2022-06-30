@@ -18,3 +18,15 @@ export const fetchItemById = async (item_id: string) => {
 
   return rows[0];
 };
+
+export const fetchItemCommentById = async (item_id: string) => {
+  let commentQueryStr = `
+    SELECT *
+    FROM comments
+    WHERE item_id = $1`;
+  const commentValue = [item_id];
+
+  const { rows } = await db.query(commentQueryStr, commentValue);
+
+  return rows;
+};
