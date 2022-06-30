@@ -1,14 +1,5 @@
-export interface Category {
-  category: string;
-  category_id: number;
-}
-
-export interface Category {
-  category: string;
-  category_id: number;
-}
-
 export interface Item {
+  item_id: number;
   name: string;
   price: number;
   body: string;
@@ -17,8 +8,14 @@ export interface Item {
   item_image: string;
   created_at: Date;
   is_available: boolean;
+  rating: number;
   lat: number;
   long: number;
+}
+
+export interface Category {
+  category: string;
+  category_id: number;
 }
 
 export type Comment = {
