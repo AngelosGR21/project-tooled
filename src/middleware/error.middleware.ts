@@ -3,6 +3,10 @@ import { ErrorRequestHandler } from "express";
 export const handlePSQLError: ErrorRequestHandler = (err, req, res, next) => {
   if (err.code === "22P02") {
     res.status(400).send({ message: "input is not valid" });
+  } else if (err.code === "23502") {
+    res.status(400).send({ message: "input is missing" });
+  } else if (err.code === "23503") {
+    res.status(404).send({ message: "input does not exist" });
   } else {
     next(err);
   }

@@ -24,3 +24,8 @@ export type Comment = {
   body: string;
   item_id: number;
 };
+
+export type CommentBody = {
+  user_id: number;
+  body: string;
+};
