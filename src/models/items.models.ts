@@ -1,7 +1,12 @@
 import db from "../db/connection";
 import { getDistance } from "../utils/location";
+import { CommentBody } from "../__test__/types-test";
 
-export const fetchItems = async (sort_by: string = "price", order: string = "desc", category: string) => {
+export const fetchItems = async (
+  sort_by: string = "price",
+  order: string = "desc",
+  category: string
+) => {
   try {
     const validSortBy = ["price", "rating"];
     const validOrder = ["asc", "desc"];
@@ -31,6 +36,7 @@ export const fetchItems = async (sort_by: string = "price", order: string = "des
     const { rows } = await db.query(queryStr, categoryVal);
 
     if (sort_by === "location") {
+      // NEEDS TO BE RETURNED
       getDistance("", rows); // first parameter non-existent until authenticated middleware is added.
     }
 
@@ -55,6 +61,33 @@ export const fetchItemById = async (item_id: string) => {
       message: `item does not exist`,
     });
   }
+
+  return rows[0];
+};
+
+export const fetchItemCommentById = async (item_id: string) => {
+  let commentQueryStr = `
+    SELECT *
+    FROM comments
+    WHERE item_id = $1`;
+  const commentValue = [item_id];
+
+  const { rows } = await db.query(commentQueryStr, commentValue);
+
+  return rows;
+};
+
+export const insertCommentByItemId = async (
+  { user_id, body }: CommentBody,
+  item_id: string
+) => {
+  const commentQueryStr = `
+    INSERT INTO comments (user_id, body, item_id)
+    VALUES ($1, $2, $3)
+    RETURNING user_id, body`;
+  const commentValue = [user_id, body, item_id];
+
+  const { rows } = await db.query(commentQueryStr, commentValue);
 
   return rows[0];
 };

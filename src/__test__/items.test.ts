@@ -3,18 +3,15 @@ import seed from "../db/seeds/seed";
 import testData from "../db/data/test-data";
 import app from "../app";
 import db from "../db/connection";
-import { Item } from "./types-test";
-import 'jest-sorted';
+import { Item, Comment } from "./types-test";
+import "jest-sorted";
 
-afterAll(() => {
-  db.end();
-})
-
+afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
 describe("API: /api/items", () => {
-  describe('GET /api/items', () => {
-    test('200: responds with an items array of items objects (sorted by date in descending order)', () => {
+  describe("GET /api/items", () => {
+    test("200: responds with an items array of items objects (sorted by date in descending order)", () => {
       return request(app)
         .get("/api/items")
         .expect(200)
@@ -36,14 +33,14 @@ describe("API: /api/items", () => {
                 is_available: expect.any(Boolean),
                 rating: expect.any(Number),
                 lat: expect.any(String),
-                long: expect.any(String)
+                long: expect.any(String),
               })
-            )
-          })
-        })
+            );
+          });
+        });
     });
 
-    test('200: responds with an items array of items objects which sorted by any valid column', () => {
+    test("200: responds with an items array of items objects which sorted by any valid column", () => {
       return request(app)
         .get("/api/items?sort_by=price&order=asc")
         .expect(200)
@@ -51,10 +48,10 @@ describe("API: /api/items", () => {
           expect(items).toBeInstanceOf(Array);
           expect(items).not.toHaveLength(0);
           expect(items).toBeSortedBy("price", { descending: false });
-        })
+        });
     });
 
-    test('200: responds with an items array of items objects which sorted by any valid column and default descending order when passed invalid order', () => {
+    test("200: responds with an items array of items objects which sorted by any valid column and default descending order when passed invalid order", () => {
       return request(app)
         .get("/api/items?sort_by=price&order=random")
         .expect(200)
@@ -76,14 +73,21 @@ describe("API: /api/items", () => {
                 is_available: expect.any(Boolean),
                 rating: expect.any(Number),
                 lat: expect.any(String),
-                long: expect.any(String)
+                long: expect.any(String),
               })
-            )
-          })
-        })
+            );
+          });
+        });
     });
 
-
+    test("400: responds with bad request message when passed invalid sort_by", () => {
+      return request(app)
+        .get("/api/items?sort_by=oranges")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Invalid sort by");
+        });
+    });
 
     test("200: responds with an items filtered by the category value specified in the query", () => {
       return request(app)
@@ -110,7 +114,6 @@ describe("API: /api/items", () => {
           expect(items).toEqual([]);
         });
     });
-
   });
   describe('GET - errors: /api/items/', () => {
     test('400: responds with bad request message when passed invalid sort_by', () => {
@@ -167,6 +170,129 @@ describe("API: /api/items", () => {
         .expect(404)
         .then(({ body: { message } }) => {
           expect(message).toBe(`item does not exist`);
+        });
+    });
+  });
+
+  describe("GET: /api/items/:item_id/comment", () => {
+    test("200: responds with a comment object", () => {
+      const item_id = 3;
+
+      return request(app)
+        .get(`/api/items/${item_id}/comments`)
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toHaveLength(2);
+          expect(comments).toBeInstanceOf(Array);
+          comments.forEach((comment: Comment) => {
+            expect(comment).toEqual(
+              expect.objectContaining({
+                comment_id: expect.any(Number),
+                user_id: expect.any(Number),
+                body: expect.any(String),
+                item_id: expect.any(Number),
+                created_at: expect.any(String),
+              })
+            );
+          });
+        });
+    });
+
+    test("200: responds with a empty comment array when item exists but no comment posted", () => {
+      const item_id = 1;
+
+      return request(app)
+        .get(`/api/items/${item_id}/comments`)
+        .expect(200)
+        .then(({ body: { comments } }) => {
+          expect(comments).toBeInstanceOf(Object);
+          expect(comments).toEqual([]);
+        });
+    });
+  });
+  describe("GET - errors: /api/items/:item_id/comments", () => {
+    test("400: responds with an error message when passed an invalid endpoint", () => {
+      const item_id = "invalid_id";
+
+      return request(app)
+        .get(`/api/items/${item_id}/comments`)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is not valid");
+        });
+    });
+
+    test("404:responds with an error message when passed an endpoint with correct data type but does not exist", () => {
+      const item_id = 999;
+
+      return request(app)
+        .get(`/api/${item_id}/comments`)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid endpoint");
+        });
+    });
+  });
+  describe("POST: /api/items/:item_id/comments", () => {
+    test("201: responds with new comment", () => {
+      const item_id = 1;
+      const newComment = {
+        body: "This is a cool game",
+        user_id: 3,
+      };
+
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(201)
+        .then(({ body: { comment } }) => {
+          expect(comment).toEqual(newComment);
+        });
+    });
+  });
+  describe("POST - errors: /api/items/:item_id/comments", () => {
+    test("400: responds with error message when body does not contain mandatory keys ", () => {
+      const item_id = 1;
+      const newComment = {
+        notUser_id: "invalid_author",
+        notBody: "invalid_body",
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is missing");
+        });
+    });
+
+    test("404: responds with error message when item_id in path does not exist", () => {
+      const item_id = 999;
+      const newComment = {
+        body: "This is a cool game",
+        user_id: 3,
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input does not exist");
+        });
+    });
+
+    test("404: responds with error message when user_id does not exist", () => {
+      const item_id = 2;
+      const newComment = {
+        body: "This is a cool game",
+        user_id: 199099,
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .send(newComment)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input does not exist");
         });
     });
   });
