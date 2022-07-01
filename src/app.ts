@@ -18,6 +18,10 @@ app.use(express.json());
 
 app.use(express.json());
 
+app.get("/", (req: Request, res: Response) => {
+  res.status(200).send("api up and running");
+});
+
 app.use("/api", apiRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/items", itemsRouter);
