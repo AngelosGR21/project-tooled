@@ -1,6 +1,7 @@
 import { generateToken } from "../utils/JWT";
 import bcrypt from "bcryptjs";
-import { LoginUser } from "../utils/user.types";
+import { LoginUser, CreatingUser } from "../utils/user.types";
+import { translatePostcodeToCoordinates } from "../utils/postcodeAPI";
 import db from "../db/connection"
 
 export const verifyUser = async (credentials: LoginUser) => {
@@ -27,4 +28,30 @@ export const verifyUser = async (credentials: LoginUser) => {
         return Promise.reject(incorrectCredentials)
     }
 
-} 
+}
+
+
+export const insertUser = async (user: CreatingUser) => {
+    const { username, postcode, name, avatar, password } = user;
+    const createUserQuery = `INSERT INTO users(username, name, lat, long, avatar, password)
+    VALUES($1, $2, $3, $4, $5, $6) RETURNING *`
+    const createUserValues = [username, name]
+
+    const coordinates = await translatePostcodeToCoordinates(postcode);
+    const { lat, long } = coordinates;
+    createUserValues.push(lat, long)
+
+    // AVATAR functionality here....
+    createUserValues.push("");
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    createUserValues.push(hashPassword);
+
+    let response = await db.query(createUserQuery, createUserValues);
+    console.log(response.rows[0]);
+
+    const userDetails = { ...response.rows[0] };
+    delete userDetails.password;
+
+    return generateToken(userDetails);
+}
