@@ -115,6 +115,33 @@ describe("API: /api/items", () => {
         });
     });
   });
+  describe.only("POST: /api/items", () => {
+    test("201: responds with new item", () => {
+      const newItem = {
+        item_id: 8,
+        name: "Gardening Mower",
+        price: 1900,
+        body: "This tool is specificity used for garden and has lasted me years.",
+        item_image: "none",
+        created_at: new Date().toISOString,
+        rating: 0,
+        is_available: true,
+        lat: "51.51561",
+        long: "-0.0769",
+        user_id: 7,
+        category_id: 7,
+      };
+
+      return request(app)
+        .post(`/api/items`)
+        .send(newItem)
+        .expect(201)
+        .then(({ body: { item } }) => {
+          expect(item).toEqual(newItem);
+        });
+    });
+  });
+
   describe("GET: /api/items/:item_id", () => {
     test("200: responds with a item object", () => {
       const item_id = 1;
@@ -133,7 +160,7 @@ describe("API: /api/items", () => {
               category_id: 1,
               item_image:
                 "https://media.istockphoto.com/photos/cordless-power-drill-picture-id184290460?k=20&m=184290460&s=612x612&w=0&h=2SPZtNwffX2rudiiftl0UZzdE5ksoqhGeR7yzIJFDaM=",
-              created_at: new Date(1610964101251).toISOString(),
+
               is_available: true,
               lat: "51.51561",
               long: "-0.0769",
@@ -223,6 +250,7 @@ describe("API: /api/items", () => {
         });
     });
   });
+
   describe("POST: /api/items/:item_id/comments", () => {
     test("201: responds with new comment", () => {
       const item_id = 1;

@@ -29,3 +29,15 @@ export type CommentBody = {
   user_id: number;
   body: string;
 };
+
+export type ItemBody = {
+  name: string;
+  price: number;
+  body: string;
+  user_id: number;
+  category_id: number;
+  item_image: string;
+  is_available: boolean;
+  lat: number;
+  long: number;
+};

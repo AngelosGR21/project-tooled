@@ -3,9 +3,10 @@ import {
   fetchItemById,
   fetchItemCommentById,
   insertCommentByItemId,
+  insertItem,
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
-import { Comment, CommentBody, Item } from "../__test__/types-test";
+import { Comment, CommentBody, Item, ItemBody } from "../__test__/types-test";
 
 export const getItems = (
   req: Request<
@@ -66,4 +67,18 @@ export const postCommentByItemId = (
       res.status(201).send({ comment });
     })
     .catch(next);
+};
+
+export const postItem = (
+  req: Request<{}, {}, ItemBody>,
+  res: Response<{ item: Item }>,
+  next: NextFunction
+) => {
+  const { body } = req;
+
+  insertItem(body)
+    .then((item: Item) => {
+      res.status(201).send({ item });
+    })
+    .catch((e) => console.log(e));
 };
