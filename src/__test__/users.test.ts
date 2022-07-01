@@ -49,4 +49,57 @@ describe("API: /api/users", () => {
                 })
         })
     })
+    describe("POST /api/users", () => {
+        test("201: creates a new user and authenticates him", () => {
+            const userDetails = {
+                "username": "testingUsername",
+                "name": "User Name",
+                "postcode": "LS170AW",
+                "password": "password"
+            }
+            return request(app)
+                .post("/api/users")
+                .send(userDetails)
+                .expect(201)
+                .then(({ headers, body }) => {
+                    const { message } = body;
+                    expect(typeof headers["x-application-token"]).toBe("string")
+                    expect(message).toBe("User created!")
+                })
+        })
+        test("409: responds with an error message when the username already exists", () => {
+            const userDetails = {
+                "username": "oxlong123",
+                "name": "User Name",
+                "postcode": "LS170AW",
+                "password": "password"
+            }
+            return request(app)
+                .post("/api/users")
+                .send(userDetails)
+                .expect(409)
+                .then(({ body }) => {
+                    const { message } = body;
+                    expect(message).toBe("username already exists")
+                })
+
+        })
+        test("404: responds with an error message when the postcode is invalid", () => {
+            const userDetails = {
+                "username": "testing details",
+                "name": "User Name",
+                "postcode": "LS170AWWWW",
+                "password": "password"
+            }
+            return request(app)
+                .post("/api/users")
+                .send(userDetails)
+                .expect(404)
+                .then(({ body }) => {
+                    const { message } = body;
+                    expect(message).toBe("Invalid postcode")
+                })
+
+        })
+    })
 })
