@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.json());
 
 app.get("/", (req: Request, res: Response) => {
-  res.status(200).send("api up and running");
+  res.status(200).json({ message: "api is up and running" });
 });
 
 app.use("/api", apiRouter);
