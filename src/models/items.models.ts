@@ -1,4 +1,5 @@
 import db from "../db/connection";
+import { getDistance } from "../utils/location";
 import { CommentBody } from "../__test__/types-test";
 
 export const fetchItems = async (
@@ -6,33 +7,39 @@ export const fetchItems = async (
   order: string = "desc",
   category: string
 ) => {
-  const validSortBy = ["price", "rating"];
-  const validOrder = ["asc", "desc"];
-
-  let queryStr = `SELECT * FROM items 
-                  LEFT JOIN categories 
-                  ON categories.category_id = items.category_id`;
-
-  const categoryVal = [];
-
-  if (category) {
-    queryStr += ` WHERE category = $1`;
-    categoryVal.push(category);
-  }
-
-  if (validSortBy.includes(sort_by)) {
-    queryStr += ` ORDER BY ${sort_by}`;
-    if (validOrder.includes(order)) {
-      queryStr += ` ${order}`;
-    } else queryStr += ` DESC`;
-  } else
-    return Promise.reject({
-      status: 400,
-      message: "Invalid sort by",
-    });
-
   try {
+    const validSortBy = ["price", "rating"];
+    const validOrder = ["asc", "desc"];
+
+    let queryStr = `SELECT * FROM items 
+                    LEFT JOIN categories 
+                    ON categories.category_id = items.category_id`;
+
+    const categoryVal = [];
+
+    if (category) {
+      queryStr += ` WHERE category = $1`;
+      categoryVal.push(category);
+    }
+
+    if (validSortBy.includes(sort_by)) {
+      queryStr += ` ORDER BY ${sort_by}`;
+      if (validOrder.includes(order)) {
+        queryStr += ` ${order}`;
+      } else queryStr += ` DESC`;
+    } else
+      return Promise.reject({
+        status: 400,
+        message: "Invalid sort by",
+      });
+
     const { rows } = await db.query(queryStr, categoryVal);
+
+    if (sort_by === "location") {
+      // NEEDS TO BE RETURNED
+      getDistance("", rows); // first parameter non-existent until authenticated middleware is added.
+    }
+
     return rows;
   } catch (error) {
     return Promise.reject(error);
