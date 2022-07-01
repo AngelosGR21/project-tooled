@@ -123,7 +123,7 @@ describe("API: /api/items", () => {
         price: 1900,
         body: "This tool is specificity used for garden and has lasted me years.",
         item_image: "none",
-        created_at: new Date().toISOString,
+        created_at: expect.any(String),
         rating: 0,
         is_available: true,
         lat: "51.51561",

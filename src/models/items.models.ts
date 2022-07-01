@@ -92,14 +92,13 @@ export const insertItem = async ({
   user_id,
   category_id,
   item_image,
-
   is_available,
   lat,
   long,
 }: ItemBody) => {
   const itemQueryStr = `
   INSERT INTO items (name, price, body, user_id, category_id, item_image, is_available, lat, long ) 
-  VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9,  ) RETURNING *`;
+  VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9 ) RETURNING *`;
   const itemValue = [
     name,
     price,
@@ -107,14 +106,12 @@ export const insertItem = async ({
     user_id,
     category_id,
     item_image,
-
     is_available,
     lat,
     long,
   ];
 
   const { rows } = await db.query(itemQueryStr, itemValue);
-  console.log(rows);
 
   return rows[0];
 };
