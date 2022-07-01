@@ -48,7 +48,6 @@ export const insertUser = async (user: CreatingUser) => {
     createUserValues.push(hashPassword);
 
     let response = await db.query(createUserQuery, createUserValues);
-    console.log(response.rows[0]);
 
     const userDetails = { ...response.rows[0] };
     delete userDetails.password;
