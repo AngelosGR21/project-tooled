@@ -17,4 +17,5 @@ export interface CreatingUser {
     postcode: string;
     name: string;
     avatar: string;
+    password: string;
 }
