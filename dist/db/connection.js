@@ -9,7 +9,15 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config({
     path: `${__dirname}/../../.env.${ENV}`,
 });
-if (!process.env.PGDATABASE) {
-    throw new Error("PGDATABASE not set");
+if (!process.env.PGDATABASE && !process.env.DATABASE_URL) {
+    throw new Error("PGDATABASE or DATABASE_URL not set");
 }
-exports.default = new pg_1.Pool();
+const config = ENV === "production"
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+            rejectUnauthorized: false,
+        },
+    }
+    : {};
+exports.default = new pg_1.Pool(config);

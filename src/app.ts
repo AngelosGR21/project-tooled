@@ -1,4 +1,5 @@
 import express, { Application, Request, Response } from "express";
+import cors from "cors";
 import {
   handleCustomError,
   handlePSQLError,
@@ -9,13 +10,13 @@ import usersRouter from "./routers/users.router";
 import categoriesRouter from "./routers/categories.router";
 import itemsRouter from "./routers/items.router";
 
-const PORT = 5000;
+const { PORT = 5000 } = process.env;
 
 const app: Application = express();
+app.use(cors());
 app.use(express.json());
 
 app.use(express.json());
-
 
 app.use("/api", apiRouter);
 app.use("/api/users", usersRouter);
@@ -29,7 +30,6 @@ app.use("/*", (req: Request, res: Response) => {
 app.use(handlePSQLError);
 app.use(handleCustomError);
 app.use(handleServerError);
-
 
 app.listen(PORT, () => {
   console.log(`Listening on ${PORT}...`);
