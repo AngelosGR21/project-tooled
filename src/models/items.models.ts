@@ -1,14 +1,17 @@
 import db from "../db/connection";
-import { getDistance } from "../utils/location";
+import { UserDetails } from "../types/user.types";
+import { getDistanceAndSort } from "../utils/location";
 import { CommentBody } from "../__test__/types-test";
 
 export const fetchItems = async (
   sort_by: string = "price",
   order: string = "desc",
-  category: string
+  category: string,
+  updatedSortBy: string[] | undefined,
+  user: UserDetails | undefined,
 ) => {
   try {
-    const validSortBy = ["price", "rating"];
+    const validSortBy = updatedSortBy || ["price", "rating"];
     const validOrder = ["asc", "desc"];
 
     let queryStr = `SELECT * FROM items 
@@ -22,22 +25,27 @@ export const fetchItems = async (
       categoryVal.push(category);
     }
 
-    if (validSortBy.includes(sort_by)) {
+    if (!validSortBy.includes(sort_by)) {
+      return Promise.reject({
+        status: 400,
+        message: "Invalid sort by"
+      })
+    }
+
+    if (validSortBy.includes(sort_by) && sort_by !== "location") {
       queryStr += ` ORDER BY ${sort_by}`;
       if (validOrder.includes(order)) {
         queryStr += ` ${order}`;
       } else queryStr += ` DESC`;
-    } else
-      return Promise.reject({
-        status: 400,
-        message: "Invalid sort by",
-      });
+    }
 
     const { rows } = await db.query(queryStr, categoryVal);
 
-    if (sort_by === "location") {
-      // NEEDS TO BE RETURNED
-      getDistance("", rows); // first parameter non-existent until authenticated middleware is added.
+
+    if (sort_by === "location" && user !== undefined) {
+      const userLocation = `(${user.lat}, ${user.long})`;
+      const sortedItems = await getDistanceAndSort(userLocation, rows);
+      return sortedItems;
     }
 
     return rows;
