@@ -1,4 +1,4 @@
-import request, { Request } from "supertest";
+import request from "supertest";
 import seed from "../db/seeds/seed";
 import testData from "../db/data/test-data";
 import app from "../app";
@@ -8,6 +8,8 @@ import "jest-sorted";
 
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
+
+const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMSwidXNlcm5hbWUiOiJ0ZXN0dHQxIiwibmFtZSI6IlVzZXIgTmFtZSIsImF2YXRhciI6IiIsImF2ZXJhZ2VfcmV2aWV3IjowLCJsYXQiOiI1Mi45MzM4MjciLCJsb25nIjoiLTEuNDc0MTk1IiwiaWF0IjoxNjU2NzY0MzgxLCJleHAiOjE2NTY4NTA3ODF9.6bbvx-SSkti-QbGY_UwXjTa95xomNPCUNQcSMx7dFbY"
 
 describe("API: /api/items", () => {
   describe("GET /api/items", () => {
@@ -80,15 +82,6 @@ describe("API: /api/items", () => {
         });
     });
 
-    test("400: responds with bad request message when passed invalid sort_by", () => {
-      return request(app)
-        .get("/api/items?sort_by=oranges")
-        .expect(400)
-        .then(({ body }) => {
-          expect(body.message).toBe("Invalid sort by");
-        });
-    });
-
     test("200: responds with an items filtered by the category value specified in the query", () => {
       return request(app)
         .get("/api/items?category=Vehicles")
@@ -115,6 +108,45 @@ describe("API: /api/items", () => {
         });
     });
   });
+  describe("GET /api/items ~~~ With auth", () => {
+    test("200: responds with an array of items sorted by location", () => {
+      return request(app)
+        .get("/api/items?sort_by=location")
+        .set("authorization", `Bearer ${authKey}`)
+        .expect(200)
+        .then(({ body: { items } }) => {
+          items.forEach((item: Item) => {
+            expect(item).toEqual(
+              expect.objectContaining({
+                item_id: expect.any(Number),
+                name: expect.any(String),
+                price: expect.any(Number),
+                body: expect.any(String),
+                user_id: expect.any(Number),
+                category_id: expect.any(Number),
+                item_image: expect.any(String),
+                created_at: expect.any(String),
+                is_available: expect.any(Boolean),
+                rating: expect.any(Number),
+                lat: expect.any(String),
+                long: expect.any(String),
+                distance: expect.any(Number),
+              })
+            );
+          });
+          expect(items).toBeSortedBy("distance")
+        })
+    })
+    test("400: responds with bad request if the user is not logged in", () => {
+      return request(app)
+        .get("/api/items?sort_by=location")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.message).toBe("Invalid sort by");
+        })
+    })
+  });
+
   describe('GET - errors: /api/items/', () => {
     test('400: responds with bad request message when passed invalid sort_by', () => {
       return request(app)
