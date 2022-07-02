@@ -1,5 +1,5 @@
 import axios from "axios";
-import { LocationSortedItem } from "./items.types";
+import { LocationSortedItem } from "../types/items.types";
 import dotenv from "dotenv";
 
 dotenv.config({ path: `${__dirname}/../../.env.api-key`, })
