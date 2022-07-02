@@ -1,6 +1,6 @@
 import { generateToken } from "../utils/JWT";
 import bcrypt from "bcryptjs";
-import { LoginUser, CreatingUser } from "../utils/user.types";
+import { LoginUser, CreatingUser } from "../types/user.types";
 import { translatePostcodeToCoordinates } from "../utils/postcodeAPI";
 import db from "../db/connection"
 
@@ -51,6 +51,5 @@ export const insertUser = async (user: CreatingUser) => {
 
     const userDetails = { ...response.rows[0] };
     delete userDetails.password;
-
     return generateToken(userDetails);
 }
