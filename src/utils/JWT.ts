@@ -1,6 +1,6 @@
 import { sign, SignOptions } from "jsonwebtoken";
 import dotenv from "dotenv";
-import { UserDetails } from "./user.types";
+import { UserDetails } from "../types/user.types";
 
 dotenv.config({
     path: `${__dirname}/../../.env.keys`
