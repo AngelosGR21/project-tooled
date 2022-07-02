@@ -7,9 +7,11 @@ import {
   postCommentByItemId,
 } from "../controllers/items.controllers";
 
+import { locationAuth } from "../middleware/authorization.middleware";
+
 const itemsRouter = Router();
 
-itemsRouter.route("/").get(getItems);
+itemsRouter.route("/").get(locationAuth, getItems);
 itemsRouter.route("/:item_id").get(getItemById);
 itemsRouter
   .route("/:item_id/comments")
