@@ -9,7 +9,7 @@ import "jest-sorted";
 afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
-const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxMSwidXNlcm5hbWUiOiJ0ZXN0dHQxIiwibmFtZSI6IlVzZXIgTmFtZSIsImF2YXRhciI6IiIsImF2ZXJhZ2VfcmV2aWV3IjowLCJsYXQiOiI1Mi45MzM4MjciLCJsb25nIjoiLTEuNDc0MTk1IiwiaWF0IjoxNjU2NzY0MzgxLCJleHAiOjE2NTY4NTA3ODF9.6bbvx-SSkti-QbGY_UwXjTa95xomNPCUNQcSMx7dFbY"
+const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCRGZ0dNN1lZbVZlNlVZcHpCL0J0WnZlOFRtbVBlc2ZRZjVNVDlwNkxJWTc3V2wyelNPUlpHMiIsImlhdCI6MTY1NjgwMjczMSwiZXhwIjoxNjU2ODg5MTMxfQ.Hw11bGLvHurnEDqDr_DkxyfXT_rY70LTjECoT4TAqVM"
 
 describe("API: /api/items", () => {
   describe("GET /api/items", () => {
@@ -266,19 +266,19 @@ describe("API: /api/items", () => {
     });
   });
   describe("POST: /api/items/:item_id/comments", () => {
-    test("201: responds with new comment", () => {
+    test("201: responds with new comment ~~ with Auth", () => {
       const item_id = 1;
       const newComment = {
         body: "This is a cool game",
-        user_id: 3,
       };
-
+      const key = authKey;
       return request(app)
         .post(`/api/items/${item_id}/comments`)
+        .set("authorization", `Bearer ${key}`)
         .send(newComment)
         .expect(201)
         .then(({ body: { comment } }) => {
-          expect(comment).toEqual(newComment);
+          expect(comment.body).toBe("This is a cool game");
         });
     });
   });
@@ -286,26 +286,42 @@ describe("API: /api/items", () => {
     test("400: responds with error message when body does not contain mandatory keys ", () => {
       const item_id = 1;
       const newComment = {
-        notUser_id: "invalid_author",
         notBody: "invalid_body",
       };
+      const token = authKey
       return request(app)
         .post(`/api/items/${item_id}/comments`)
+        .set("authorization", `Bearer ${token}`)
         .send(newComment)
         .expect(400)
         .then(({ body: { message } }) => {
-          expect(message).toBe("input is missing");
+          expect(message).toBe("Comment body is missing...");
         });
     });
+
+    test("401: responds with an error message when user is not logged in", () => {
+      const item_id = 1;
+      const newComment = {
+        body: "testing the api",
+      };
+      return request(app)
+        .post(`/api/items/${item_id}/comments`)
+        .expect(401)
+        .send(newComment)
+        .expect(({ body: { message } }) => {
+          expect(message).toBe("you are not logged in")
+        })
+    })
 
     test("404: responds with error message when item_id in path does not exist", () => {
       const item_id = 999;
       const newComment = {
         body: "This is a cool game",
-        user_id: 3,
       };
+      const token = authKey
       return request(app)
         .post(`/api/items/${item_id}/comments`)
+        .set("authorization", `Bearer ${token}`)
         .send(newComment)
         .expect(404)
         .then(({ body: { message } }) => {
@@ -313,19 +329,5 @@ describe("API: /api/items", () => {
         });
     });
 
-    test("404: responds with error message when user_id does not exist", () => {
-      const item_id = 2;
-      const newComment = {
-        body: "This is a cool game",
-        user_id: 199099,
-      };
-      return request(app)
-        .post(`/api/items/${item_id}/comments`)
-        .send(newComment)
-        .expect(404)
-        .then(({ body: { message } }) => {
-          expect(message).toBe("input does not exist");
-        });
-    });
   });
 });
