@@ -7,6 +7,7 @@ import {
 import { Request, Response, NextFunction } from "express";
 import { Comment, CommentBody, Item } from "../__test__/types-test";
 import { ILocals } from "../types/items.types";
+import { UserDetails } from "../types/user.types";
 
 export const getItems = (
   req: Request<
@@ -60,12 +61,13 @@ export const postCommentByItemId = (
   res: Response<{ comment: Comment }>,
   next: NextFunction
 ) => {
-  const { body } = req;
+  const { body } = req.body;
   const { item_id } = req.params;
+  const { user_id } = res.locals.user;
 
-  insertCommentByItemId(body, item_id)
+  insertCommentByItemId(body, item_id, user_id)
     .then((comment: Comment) => {
-      res.status(201).send({ comment });
+      res.status(201).json({ comment });
     })
     .catch(next);
 };
