@@ -86,16 +86,23 @@ export const fetchItemCommentById = async (item_id: string) => {
 };
 
 export const insertCommentByItemId = async (
-  { user_id, body }: CommentBody,
-  item_id: string
+  body: string,
+  item_id: string,
+  user_id: number,
 ) => {
-  const commentQueryStr = `
-    INSERT INTO comments (user_id, body, item_id)
-    VALUES ($1, $2, $3)
-    RETURNING user_id, body`;
-  const commentValue = [user_id, body, item_id];
+  try {
+    if (!body) {
+      return Promise.reject({ status: 400, message: "Comment body is missing..." })
+    }
 
-  const { rows } = await db.query(commentQueryStr, commentValue);
-
-  return rows[0];
+    const commentQueryStr = `
+  INSERT INTO comments (user_id, body, item_id)
+  VALUES ($1, $2, $3)
+  RETURNING user_id, body`;
+    const commentValue = [user_id, body, item_id];
+    const { rows } = await db.query(commentQueryStr, commentValue);
+    return rows[0];
+  } catch (e) {
+    return Promise.reject(e);
+  }
 };
