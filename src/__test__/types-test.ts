@@ -26,6 +26,5 @@ export type Comment = {
 };
 
 export type CommentBody = {
-  user_id: number;
   body: string;
 };
