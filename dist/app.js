@@ -16,7 +16,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.json());
 app.get("/", (req, res) => {
-    res.status(200).send("api up and running");
+    res.status(200).json({ message: "api is up and running" });
 });
 app.use("/api", api_router_1.default);
 app.use("/api/users", users_router_1.default);

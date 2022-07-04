@@ -4,7 +4,7 @@ exports.postCommentByItemId = exports.getItemCommentById = exports.getItemById =
 const items_models_1 = require("../models/items.models");
 const getItems = (req, res, next) => {
     const { sort_by, order, category } = req.query;
-    (0, items_models_1.fetchItems)(sort_by, order, category)
+    (0, items_models_1.fetchItems)(sort_by, order, category, res.locals.updatedSortBy, res.locals.user)
         .then((items) => {
         res.status(200).send({ items });
     })
@@ -30,11 +30,12 @@ const getItemCommentById = (req, res, next) => {
 };
 exports.getItemCommentById = getItemCommentById;
 const postCommentByItemId = (req, res, next) => {
-    const { body } = req;
+    const { body } = req.body;
     const { item_id } = req.params;
-    (0, items_models_1.insertCommentByItemId)(body, item_id)
+    const { user_id } = res.locals.user;
+    (0, items_models_1.insertCommentByItemId)(body, item_id, user_id)
         .then((comment) => {
-        res.status(201).send({ comment });
+        res.status(201).json({ comment });
     })
         .catch(next);
 };
