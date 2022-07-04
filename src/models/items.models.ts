@@ -1,7 +1,7 @@
 import db from "../db/connection";
+import { CommentBody, ItemBody } from "../__test__/types-test";
 import { UserDetails } from "../types/user.types";
 import { getDistanceAndSort } from "../utils/location";
-import { CommentBody } from "../__test__/types-test";
 
 export const fetchItems = async (
   sort_by: string = "price",
@@ -105,4 +105,35 @@ export const insertCommentByItemId = async (
   } catch (e) {
     return Promise.reject(e);
   }
+};
+
+export const insertItem = async ({
+  name,
+  price,
+  body,
+  user_id,
+  category_id,
+  item_image,
+  is_available,
+  lat,
+  long,
+}: ItemBody) => {
+  const itemQueryStr = `
+  INSERT INTO items (name, price, body, user_id, category_id, item_image, is_available, lat, long ) 
+  VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9 ) RETURNING *`;
+  const itemValue = [
+    name,
+    price,
+    body,
+    user_id,
+    category_id,
+    item_image,
+    is_available,
+    lat,
+    long,
+  ];
+
+  const { rows } = await db.query(itemQueryStr, itemValue);
+
+  return rows[0];
 };
