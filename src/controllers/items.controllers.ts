@@ -80,5 +80,5 @@ export const postItem = (
     .then((item: Item) => {
       res.status(201).send({ item });
     })
-    .catch((e) => console.log(e));
+    .catch(next);
 };

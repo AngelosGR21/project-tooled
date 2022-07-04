@@ -115,7 +115,7 @@ describe("API: /api/items", () => {
         });
     });
   });
-  describe.only("POST: /api/items", () => {
+  describe("POST: /api/items", () => {
     test("201: responds with new item", () => {
       const newItem = {
         item_id: 8,
@@ -138,6 +138,80 @@ describe("API: /api/items", () => {
         .expect(201)
         .then(({ body: { item } }) => {
           expect(item).toEqual(newItem);
+        });
+    });
+  });
+  describe("POST - errors: /api/items", () => {
+    test("400: responds with error message when body does not contain mandatory keys ", () => {
+      const newItem = {
+        not_item_id: 88888,
+        not_name: "Gardening Mower",
+        not_price: 1900,
+        not_body:
+          "This tool is specificity used for garden and has lasted me years.",
+        not_item_image: "none",
+        not_created_at: 0,
+        not_rating: 0,
+        not_is_available: true,
+        not_lat: "51.51561",
+        not_long: "-0.0769",
+        not_user_id: 7,
+        not_category_id: 7,
+      };
+
+      return request(app)
+        .post(`/api/items`)
+        .send(newItem)
+        .expect(400)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is missing");
+        });
+    });
+
+    test("404: responds with error message when endpoint does not exist", () => {
+      const newItem = {
+        item_id: 8,
+        name: "Gardening Mower",
+        price: 1900,
+        body: "This tool is specificity used for garden and has lasted me years.",
+        item_image: "none",
+        created_at: expect.any(String),
+        rating: 0,
+        is_available: true,
+        lat: "51.51561",
+        long: "-0.0769",
+        user_id: 7,
+        category_id: 7,
+      };
+      return request(app)
+        .post(`/api/items1`)
+        .send(newItem)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("invalid endpoint");
+        });
+    });
+    test("404: responds with error message when user does not exist", () => {
+      const newItem = {
+        item_id: 8,
+        name: "Gardening Mower",
+        price: 1900,
+        body: "This tool is specificity used for garden and has lasted me years.",
+        item_image: "none",
+        created_at: expect.any(String),
+        rating: 0,
+        is_available: true,
+        lat: "51.51561",
+        long: "-0.0769",
+        user_id: 7777,
+        category_id: 7,
+      };
+      return request(app)
+        .post(`/api/items`)
+        .send(newItem)
+        .expect(404)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input does not exist");
         });
     });
   });
