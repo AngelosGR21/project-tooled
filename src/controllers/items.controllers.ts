@@ -98,14 +98,16 @@ export const postItem = (
 };
 
 export const deleteItem = (
-  req: Request<{}, {}>,
+  req: Request<{ item_id: string }, {}>,
   res: Response<{ item: {} }, ILocals>,
   next: NextFunction
 ) => {
+  const { item_id } = req.params;
   const { user_id } = res.locals.user;
-  removeItem(user_id)
+
+  removeItem(item_id, user_id)
     .then((item: {}) => {
       res.status(204).send({ item });
     })
-    .catch(next);
+    .catch((e) => next(e));
 };

@@ -13,12 +13,9 @@ import { locationAuth, postAuth } from "../middleware/authorization.middleware";
 
 const itemsRouter = Router();
 
-itemsRouter
-  .route("/")
-  .get(locationAuth, getItems)
-  .post(postItem)
-  .delete(postAuth, deleteItem);
-itemsRouter.route("/:item_id").get(getItemById);
+itemsRouter.route("/").get(locationAuth, getItems).post(postItem);
+
+itemsRouter.route("/:item_id").get(getItemById).delete(postAuth, deleteItem);
 itemsRouter
   .route("/:item_id/comments")
   .get(getItemCommentById)

@@ -140,13 +140,44 @@ export const insertItem = async ({
   return rows[0];
 };
 
-export const removeItem = async (user_id: number) => {
+export const removeItem = async (item_id: string, user_id: number) => {
   const itemQueryStr = `
-  DELETE FROM items
-  WHERE user_id = $1`;
-  const itemValue = [user_id];
+    SELECT *
+    FROM items
+    WHERE item_id = $1
+    `;
+  const itemValue = [item_id];
+  const { rows: rowsItems } = await db.query(itemQueryStr, itemValue);
+  const { user_id: userRows } = rowsItems[0];
 
-  const { rows } = await db.query(itemQueryStr, itemValue);
+  if (!user_id === userRows) {
+    return Promise.reject({
+      status: 401,
+      message: "Incorrect user...",
+    });
+  }
+  const removeCommentQueryStr = `
+    DELETE FROM comments
+    WHERE item_id = $1`;
+  const removeCommentValue = [item_id];
+
+  const commentQuery = db.query(removeCommentQueryStr, removeCommentValue);
+
+  const removeFavQueryStr = `
+    DELETE FROM favourites
+    WHERE item_id = $1`;
+  const removeFavValue = [item_id];
+
+  const favouritesQuery = db.query(removeFavQueryStr, removeFavValue);
+
+  await Promise.all([commentQuery, favouritesQuery]);
+
+  const removeItemQueryStr = `
+    DELETE FROM items
+    WHERE item_id = $1`;
+  const removeItemValue = [item_id];
+
+  const { rows } = await db.query(removeItemQueryStr, removeItemValue);
 
   return rows;
 };
