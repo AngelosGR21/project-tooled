@@ -1,7 +1,6 @@
 import db from "../db/connection";
 import { UserDetails } from "../types/user.types";
 import { getDistanceAndSort } from "../utils/location";
-import { CommentBody } from "../__test__/types-test";
 
 export const fetchItems = async (
   sort_by: string = "price",
