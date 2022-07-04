@@ -181,3 +181,40 @@ export const removeItem = async (item_id: string, user_id: number) => {
 
   return rows;
 };
+
+export const removeComment = async (comment_id: string, user_id: number) => {
+  const res = await fetchItemCommentById(comment_id);
+  console.log(res);
+
+  // if (user_id !== userRows) {
+  //   return Promise.reject({
+  //     status: 401,
+  //     message: "unauthorized request...",
+  //   });
+  // }
+
+  // const removeCommentQueryStr = `
+  //   DELETE FROM comments
+  //   WHERE comment_id = $1`;
+  // const removeCommentValue = [comment_id];
+
+  // const commentQuery = db.query(removeCommentQueryStr, removeCommentValue);
+
+  // const removeFavQueryStr = `
+  //   DELETE FROM favourites
+  //   WHERE comment_id = $1`;
+  // const removeFavValue = [comment_id];
+
+  // const favouritesQuery = db.query(removeFavQueryStr, removeFavValue);
+
+  // await Promise.all([commentQuery, favouritesQuery]);
+
+  // const removeItemQueryStr = `
+  //   DELETE FROM items
+  //   WHERE comment_id = $1`;
+  // const removeItemValue = [comment_id];
+
+  // const { rows } = await db.query(removeItemQueryStr, removeItemValue);
+
+  // return rows;
+};
