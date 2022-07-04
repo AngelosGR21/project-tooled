@@ -1,12 +1,12 @@
 import axios from "axios";
-import { Item } from "./items.types";
+import { LocationSortedItem } from "../types/items.types";
 import dotenv from "dotenv";
 
 dotenv.config({ path: `${__dirname}/../../.env.api-key`, })
 
-export const getDistance = async (userStartPoint: string, itemsArray: Item[]) => {
+export const getDistanceAndSort = async (userStartPoint: string, itemsArray: LocationSortedItem[]) => {
   try {
-    let newItemsArray: Item[] = [...itemsArray];
+    let newItemsArray: LocationSortedItem[] = [...itemsArray];
     const params: { [key: string]: any } = {
       start_point: userStartPoint,
       unit: "miles",
@@ -24,7 +24,6 @@ export const getDistance = async (userStartPoint: string, itemsArray: Item[]) =>
       const long = newItemsArray[i - 1].long;
       params[`end_point_${i}`] = `${lat}, ${long}`;
       newItemsArray[i - 1][`end_point_${i}`] = i
-      newItemsArray
     }
 
     const options = {
@@ -42,7 +41,12 @@ export const getDistance = async (userStartPoint: string, itemsArray: Item[]) =>
       delete newItemsArray[i - 1][key];
     }
 
-    return newItemsArray;
+    const compare = (a: LocationSortedItem, b: LocationSortedItem) => {
+      if (a.distance < b.distance) return -1;
+      if (a.distance > b.distance) return 1;
+      return 0
+    }
+    return newItemsArray?.sort(compare)
 
   } catch (e) {
     console.log(e);

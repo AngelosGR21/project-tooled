@@ -6,6 +6,8 @@ import {
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
 import { Comment, CommentBody, Item } from "../__test__/types-test";
+import { ILocals } from "../types/items.types";
+import { UserDetails } from "../types/user.types";
 
 export const getItems = (
   req: Request<
@@ -14,12 +16,13 @@ export const getItems = (
     {},
     { sort_by: string; order: string; category: string }
   >,
-  res: Response<{ items: Item[] }>,
+  res: Response<{}, ILocals>,
   next: NextFunction
 ) => {
   const { sort_by, order, category } = req.query;
-  fetchItems(sort_by, order, category)
-    .then((items: Item[]) => {
+
+  fetchItems(sort_by, order, category, res.locals.updatedSortBy, res.locals.user)
+    .then((items) => {
       res.status(200).send({ items });
     })
     .catch(next);
@@ -58,12 +61,13 @@ export const postCommentByItemId = (
   res: Response<{ comment: Comment }>,
   next: NextFunction
 ) => {
-  const { body } = req;
+  const { body } = req.body;
   const { item_id } = req.params;
+  const { user_id } = res.locals.user;
 
-  insertCommentByItemId(body, item_id)
+  insertCommentByItemId(body, item_id, user_id)
     .then((comment: Comment) => {
-      res.status(201).send({ comment });
+      res.status(201).json({ comment });
     })
     .catch(next);
 };

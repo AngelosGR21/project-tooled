@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express"
-import { LoginUser, CreatingUser } from "../utils/user.types";
+import { LoginUser, CreatingUser } from "../types/user.types";
 
 //models
 import { verifyUser, insertUser } from "../models/users.models";

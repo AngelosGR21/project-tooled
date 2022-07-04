@@ -1,4 +1,11 @@
-export interface Item {
+import { UserDetails } from "./user.types";
+
+export interface ILocals {
+    updatedSortBy?: string[];
+    user: UserDetails;
+}
+
+export interface LocationSortedItem {
     item_id: number;
     name: string;
     price: number;
@@ -11,6 +18,6 @@ export interface Item {
     rating: number;
     lat: number;
     long: number;
-    distance?: number;
+    distance: number;
     [key: string]: any;
-  };
+};

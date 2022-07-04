@@ -1,4 +1,5 @@
 export interface UserDetails {
+    user_id: number;
     username: string;
     lat: string;
     long: string;
