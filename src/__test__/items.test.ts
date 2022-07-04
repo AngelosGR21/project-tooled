@@ -489,4 +489,64 @@ describe("API: /api/items", () => {
         });
     });
   });
+
+  describe("DELETE:  /api/items/:item_id/:comment_id", () => {
+    test("204: delete the post", () => {
+      const item_id = 4;
+      const comment_id = 4;
+
+      return request(app)
+        .delete(`/api/items/${item_id}/${comment_id}`)
+        .set("authorization", `Bearer ${authKey}`)
+        .expect(204);
+    });
+  });
+  describe.only("DELETE - error: /api/items/:item_id", () => {
+    test("401: responds with error message when item_id & comment_id is unauthorized", () => {
+      const item_id = 4;
+      const comment_id = 4;
+
+      return request(app)
+        .delete(`/api/items/${item_id}/${comment_id}`)
+        .expect(401)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("you are not logged in");
+        });
+    });
+    test("400: responds with error message when comment_id is a string", () => {
+      const item_id = 4;
+      const comment_id = "invalid";
+
+      return request(app)
+        .delete(`/api/items/${item_id}/${comment_id}`)
+        .expect(400)
+        .set("authorization", `Bearer ${authKey}`)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is not valid");
+        });
+    });
+    test("404: responds with error message when comment_id does not exist", () => {
+      const item_id = 4;
+      const comment_id = 999;
+      return request(app)
+        .delete(`/api/items/${item_id}/${comment_id}`)
+        .expect(404)
+        .set("authorization", `Bearer ${authKey}`)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`comment does not exist`);
+        });
+    });
+    test("401: responds with error message when creater of item_id does not match user_id", () => {
+      const item_id = 4;
+      const comment_id = 5;
+
+      return request(app)
+        .delete(`/api/items/${item_id}/${comment_id}`)
+        .expect(401)
+        .set("authorization", `Bearer ${authKey}`)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`unauthorized request...`);
+        });
+    });
+  });
 });

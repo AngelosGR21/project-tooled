@@ -1,5 +1,5 @@
 import db from "../db/connection";
-import { CommentBody, ItemBody } from "../__test__/types-test";
+import { Comment, CommentBody, ItemBody } from "../__test__/types-test";
 import { UserDetails } from "../types/user.types";
 import { getDistanceAndSort } from "../utils/location";
 
@@ -175,39 +175,40 @@ export const removeItem = async (item_id: string, user_id: number) => {
   return rows;
 };
 
-export const removeComment = async (comment_id: string, user_id: number) => {
-  const res = await fetchItemCommentById(comment_id);
-  console.log(res);
+export const removeComment = async (
+  comment_id: string,
+  item_id: string,
+  user_id: number
+) => {
+  const removeCommentQueryStr = `
+  DELETE FROM comments
+  WHERE comment_id = $1`;
+  const removeCommentValue = [comment_id];
 
-  // if (user_id !== userRows) {
-  //   return Promise.reject({
-  //     status: 401,
-  //     message: "unauthorized request...",
-  //   });
-  // }
+  if (comment_id) {
+    const commentQueryStr = `
+    SELECT comment_id,user_id,item_id
+    FROM comments
+    WHERE comment_id = $1`;
+    const commentValue = [comment_id];
 
-  // const removeCommentQueryStr = `
-  //   DELETE FROM comments
-  //   WHERE comment_id = $1`;
-  // const removeCommentValue = [comment_id];
+    const { rows } = await db.query(commentQueryStr, commentValue);
 
-  // const commentQuery = db.query(removeCommentQueryStr, removeCommentValue);
+    if (!rows.length) {
+      return Promise.reject({
+        status: 404,
+        message: `comment does not exist`,
+      });
+    }
+    if (user_id !== rows[0].user_id) {
+      return Promise.reject({
+        status: 401,
+        message: "unauthorized request...",
+      });
+    }
+  }
 
-  // const removeFavQueryStr = `
-  //   DELETE FROM favourites
-  //   WHERE comment_id = $1`;
-  // const removeFavValue = [comment_id];
+  const { rows } = await db.query(removeCommentQueryStr, removeCommentValue);
 
-  // const favouritesQuery = db.query(removeFavQueryStr, removeFavValue);
-
-  // await Promise.all([commentQuery, favouritesQuery]);
-
-  // const removeItemQueryStr = `
-  //   DELETE FROM items
-  //   WHERE comment_id = $1`;
-  // const removeItemValue = [comment_id];
-
-  // const { rows } = await db.query(removeItemQueryStr, removeItemValue);
-
-  // return rows;
+  return rows;
 };

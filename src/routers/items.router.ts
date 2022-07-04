@@ -20,7 +20,8 @@ itemsRouter.route("/:item_id").get(getItemById).delete(postAuth, deleteItem);
 itemsRouter
   .route("/:item_id/comments")
   .get(getItemCommentById)
-  .post(postAuth, postCommentByItemId)
-  .delete(postAuth, deleteComment);
+  .post(postAuth, postCommentByItemId);
+
+itemsRouter.route("/:item_id/:comment_id").delete(postAuth, deleteComment);
 
 export default itemsRouter;

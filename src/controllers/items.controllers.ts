@@ -114,16 +114,16 @@ export const deleteItem = (
 };
 
 export const deleteComment = (
-  req: Request<{ comment_id: string }, {}>,
+  req: Request<{ comment_id: string; item_id: string }, {}>,
   res: Response<{ comment: {} }, ILocals>,
   next: NextFunction
 ) => {
-  const { comment_id } = req.params;
+  const { comment_id, item_id } = req.params;
   const { user_id } = res.locals.user;
 
-  removeComment(comment_id, user_id)
-    // .then((comment: {}) => {
-    //   res.status(204).send({ comment });
-    // })
-    .catch((e) => console.log(e));
+  removeComment(comment_id, item_id, user_id)
+    .then((comment: {}) => {
+      res.status(204).send({ comment });
+    })
+    .catch(next);
 };
