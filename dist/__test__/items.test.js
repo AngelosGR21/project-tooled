@@ -11,7 +11,7 @@ const connection_1 = __importDefault(require("../db/connection"));
 require("jest-sorted");
 afterAll(() => connection_1.default.end());
 beforeEach(() => (0, seed_1.default)(test_data_1.default));
-const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCRGZ0dNN1lZbVZlNlVZcHpCL0J0WnZlOFRtbVBlc2ZRZjVNVDlwNkxJWTc3V2wyelNPUlpHMiIsImlhdCI6MTY1NjgwMjczMSwiZXhwIjoxNjU2ODg5MTMxfQ.Hw11bGLvHurnEDqDr_DkxyfXT_rY70LTjECoT4TAqVM";
+const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCRGZ0dNN1lZbVZlNlVZcHpCL0J0WnZlOFRtbVBlc2ZRZjVNVDlwNkxJWTc3V2wyelNPUlpHMiIsImlhdCI6MTY1NjkyNzkzNSwiZXhwIjoxNjU3MDE0MzM1fQ.EWi_lAZY8ysp465bGfCxKfNqPmV3fITTVVCstf9FpOs";
 describe("API: /api/items", () => {
     describe("GET /api/items", () => {
         test("200: responds with an items array of items objects (sorted by date in descending order)", () => {
@@ -99,6 +99,102 @@ describe("API: /api/items", () => {
             });
         });
     });
+    describe("POST: /api/items", () => {
+        test("201: responds with new item", () => {
+            const newItem = {
+                item_id: 8,
+                name: "Gardening Mower",
+                price: 1900,
+                body: "This tool is specificity used for garden and has lasted me years.",
+                item_image: "none",
+                created_at: expect.any(String),
+                rating: 0,
+                is_available: true,
+                lat: "51.51561",
+                long: "-0.0769",
+                user_id: 7,
+                category_id: 7,
+            };
+            return (0, supertest_1.default)(app_1.default)
+                .post(`/api/items`)
+                .send(newItem)
+                .expect(201)
+                .then(({ body: { item } }) => {
+                expect(item).toEqual(newItem);
+            });
+        });
+    });
+    describe("POST - errors: /api/items", () => {
+        test("400: responds with error message when body does not contain mandatory keys ", () => {
+            const newItem = {
+                not_item_id: 88888,
+                not_name: "Gardening Mower",
+                not_price: 1900,
+                not_body: "This tool is specificity used for garden and has lasted me years.",
+                not_item_image: "none",
+                not_created_at: 0,
+                not_rating: 0,
+                not_is_available: true,
+                not_lat: "51.51561",
+                not_long: "-0.0769",
+                not_user_id: 7,
+                not_category_id: 7,
+            };
+            return (0, supertest_1.default)(app_1.default)
+                .post(`/api/items`)
+                .send(newItem)
+                .expect(400)
+                .then(({ body: { message } }) => {
+                expect(message).toBe("input is missing");
+            });
+        });
+        test("404: responds with error message when endpoint does not exist", () => {
+            const newItem = {
+                item_id: 8,
+                name: "Gardening Mower",
+                price: 1900,
+                body: "This tool is specificity used for garden and has lasted me years.",
+                item_image: "none",
+                created_at: expect.any(String),
+                rating: 0,
+                is_available: true,
+                lat: "51.51561",
+                long: "-0.0769",
+                user_id: 7,
+                category_id: 7,
+            };
+            return (0, supertest_1.default)(app_1.default)
+                .post(`/api/items1`)
+                .send(newItem)
+                .expect(404)
+                .then(({ body: { message } }) => {
+                expect(message).toBe("invalid endpoint");
+            });
+        });
+        test("404: responds with error message when user does not exist", () => {
+            const newItem = {
+                item_id: 8,
+                name: "Gardening Mower",
+                price: 1900,
+                body: "This tool is specificity used for garden and has lasted me years.",
+                item_image: "none",
+                created_at: expect.any(String),
+                rating: 0,
+                is_available: true,
+                lat: "51.51561",
+                long: "-0.0769",
+                user_id: 7777,
+                category_id: 7,
+            };
+            return (0, supertest_1.default)(app_1.default)
+                .post(`/api/items`)
+                .send(newItem)
+                .expect(404)
+                .then(({ body: { message } }) => {
+                expect(message).toBe("input does not exist");
+            });
+        });
+    });
     describe("GET /api/items ~~~ With auth", () => {
         test("200: responds with an array of items sorted by location", () => {
             return (0, supertest_1.default)(app_1.default)
@@ -161,7 +257,6 @@ describe("API: /api/items", () => {
                     user_id: 1,
                     category_id: 1,
                     item_image: "https://media.istockphoto.com/photos/cordless-power-drill-picture-id184290460?k=20&m=184290460&s=612x612&w=0&h=2SPZtNwffX2rudiiftl0UZzdE5ksoqhGeR7yzIJFDaM=",
-                    created_at: new Date(1610964101251).toISOString(),
                     is_available: true,
                     lat: "51.51561",
                     long: "-0.0769",

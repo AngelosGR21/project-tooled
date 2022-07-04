@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.insertCommentByItemId = exports.fetchItemCommentById = exports.fetchItemById = exports.fetchItems = void 0;
+exports.insertItem = exports.insertCommentByItemId = exports.fetchItemCommentById = exports.fetchItemById = exports.fetchItems = void 0;
 const connection_1 = __importDefault(require("../db/connection"));
 const location_1 = require("../utils/location");
 const fetchItems = (sort_by = "price", order = "desc", category, updatedSortBy, user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -99,3 +99,22 @@ const insertCommentByItemId = (body, item_id, user_id) => __awaiter(void 0, void
     }
 });
 exports.insertCommentByItemId = insertCommentByItemId;
+const insertItem = ({ name, price, body, user_id, category_id, item_image, is_available, lat, long, }) => __awaiter(void 0, void 0, void 0, function* () {
+    const itemQueryStr = `
+  INSERT INTO items (name, price, body, user_id, category_id, item_image, is_available, lat, long ) 
+  VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9 ) RETURNING *`;
+    const itemValue = [
+        name,
+        price,
+        body,
+        user_id,
+        category_id,
+        item_image,
+        is_available,
+        lat,
+        long,
+    ];
+    const { rows } = yield connection_1.default.query(itemQueryStr, itemValue);
+    return rows[0];
+});
+exports.insertItem = insertItem;

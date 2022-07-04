@@ -9,7 +9,6 @@ import {
 import { Request, Response, NextFunction } from "express";
 import { Comment, CommentBody, Item, ItemBody } from "../__test__/types-test";
 import { ILocals } from "../types/items.types";
-import { UserDetails } from "../types/user.types";
 
 export const getItems = (
   req: Request<
@@ -31,7 +30,11 @@ export const getItems = (
     res.locals.user
   )
     .then((items) => {
-      res.status(200).send({ items });
+      if (res.locals.tokenError) {
+        const { tokenError } = res.locals;
+        return res.status(200).json({ items, tokenError });
+      }
+      res.status(200).json({ items });
     })
     .catch(next);
 };
