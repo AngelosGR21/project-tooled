@@ -3,6 +3,7 @@ import { UserDetails } from "./user.types";
 export interface ILocals {
     updatedSortBy?: string[];
     user: UserDetails;
+    tokenError?: Object;
 }
 
 export interface LocationSortedItem {
