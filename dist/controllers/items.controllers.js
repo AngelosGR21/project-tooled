@@ -1,12 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postCommentByItemId = exports.getItemCommentById = exports.getItemById = exports.getItems = void 0;
+exports.postItem = exports.postCommentByItemId = exports.getItemCommentById = exports.getItemById = exports.getItems = void 0;
 const items_models_1 = require("../models/items.models");
 const getItems = (req, res, next) => {
     const { sort_by, order, category } = req.query;
     (0, items_models_1.fetchItems)(sort_by, order, category, res.locals.updatedSortBy, res.locals.user)
         .then((items) => {
-        res.status(200).send({ items });
+        if (res.locals.tokenError) {
+            const { tokenError } = res.locals;
+            return res.status(200).json({ items, tokenError });
+        }
+        res.status(200).json({ items });
     })
         .catch(next);
 };
@@ -40,3 +44,12 @@ const postCommentByItemId = (req, res, next) => {
         .catch(next);
 };
 exports.postCommentByItemId = postCommentByItemId;
+const postItem = (req, res, next) => {
+    const { body } = req;
+    (0, items_models_1.insertItem)(body)
+        .then((item) => {
+        res.status(201).send({ item });
+    })
+        .catch(next);
+};
+exports.postItem = postItem;
