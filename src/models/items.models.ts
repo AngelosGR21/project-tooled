@@ -141,21 +141,14 @@ export const insertItem = async ({
 };
 
 export const removeItem = async (item_id: string, user_id: number) => {
-  const itemQueryStr = `
-    SELECT *
-    FROM items
-    WHERE item_id = $1
-    `;
-  const itemValue = [item_id];
-  const { rows: rowsItems } = await db.query(itemQueryStr, itemValue);
-  const { user_id: userRows } = rowsItems[0];
-
-  if (!user_id === userRows) {
+  const { user_id: userRows } = await fetchItemById(item_id);
+  if (user_id !== userRows) {
     return Promise.reject({
       status: 401,
-      message: "Incorrect user...",
+      message: "unauthorized request...",
     });
   }
+
   const removeCommentQueryStr = `
     DELETE FROM comments
     WHERE item_id = $1`;

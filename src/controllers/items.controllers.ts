@@ -110,7 +110,7 @@ export const deleteItem = (
     .then((item: {}) => {
       res.status(204).send({ item });
     })
-    .catch((e) => next(e));
+    .catch(next);
 };
 
 export const deleteComment = (
