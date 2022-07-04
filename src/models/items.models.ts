@@ -8,7 +8,7 @@ export const fetchItems = async (
   order: string = "desc",
   category: string,
   updatedSortBy: string[] | undefined,
-  user: UserDetails | undefined,
+  user: UserDetails | undefined
 ) => {
   try {
     const validSortBy = updatedSortBy || ["price", "rating"];
@@ -28,8 +28,8 @@ export const fetchItems = async (
     if (!validSortBy.includes(sort_by)) {
       return Promise.reject({
         status: 400,
-        message: "Invalid sort by"
-      })
+        message: "Invalid sort by",
+      });
     }
 
     if (validSortBy.includes(sort_by) && sort_by !== "location") {
@@ -40,7 +40,6 @@ export const fetchItems = async (
     }
 
     const { rows } = await db.query(queryStr, categoryVal);
-
 
     if (sort_by === "location" && user !== undefined) {
       const userLocation = `(${user.lat}, ${user.long})`;
@@ -75,9 +74,9 @@ export const fetchItemById = async (item_id: string) => {
 
 export const fetchItemCommentById = async (item_id: string) => {
   let commentQueryStr = `
-    SELECT *
-    FROM comments
-    WHERE item_id = $1`;
+  SELECT *
+  FROM comments
+  WHERE item_id = $1`;
   const commentValue = [item_id];
 
   const { rows } = await db.query(commentQueryStr, commentValue);
@@ -88,11 +87,14 @@ export const fetchItemCommentById = async (item_id: string) => {
 export const insertCommentByItemId = async (
   body: string,
   item_id: string,
-  user_id: number,
+  user_id: number
 ) => {
   try {
     if (!body) {
-      return Promise.reject({ status: 400, message: "Comment body is missing..." })
+      return Promise.reject({
+        status: 400,
+        message: "Comment body is missing...",
+      });
     }
 
     const commentQueryStr = `
@@ -136,4 +138,39 @@ export const insertItem = async ({
   const { rows } = await db.query(itemQueryStr, itemValue);
 
   return rows[0];
+};
+
+export const removeItem = async (item_id: string, user_id: number) => {
+  const { user_id: userRows } = await fetchItemById(item_id);
+  if (user_id !== userRows) {
+    return Promise.reject({
+      status: 401,
+      message: "unauthorized request...",
+    });
+  }
+
+  const removeCommentQueryStr = `
+    DELETE FROM comments
+    WHERE item_id = $1`;
+  const removeCommentValue = [item_id];
+
+  const commentQuery = db.query(removeCommentQueryStr, removeCommentValue);
+
+  const removeFavQueryStr = `
+    DELETE FROM favourites
+    WHERE item_id = $1`;
+  const removeFavValue = [item_id];
+
+  const favouritesQuery = db.query(removeFavQueryStr, removeFavValue);
+
+  await Promise.all([commentQuery, favouritesQuery]);
+
+  const removeItemQueryStr = `
+    DELETE FROM items
+    WHERE item_id = $1`;
+  const removeItemValue = [item_id];
+
+  const { rows } = await db.query(removeItemQueryStr, removeItemValue);
+
+  return rows;
 };

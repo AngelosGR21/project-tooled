@@ -4,6 +4,7 @@ import {
   fetchItemCommentById,
   insertCommentByItemId,
   insertItem,
+  removeItem,
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
 import { Comment, CommentBody, Item, ItemBody } from "../__test__/types-test";
@@ -21,7 +22,13 @@ export const getItems = (
 ) => {
   const { sort_by, order, category } = req.query;
 
-  fetchItems(sort_by, order, category, res.locals.updatedSortBy, res.locals.user)
+  fetchItems(
+    sort_by,
+    order,
+    category,
+    res.locals.updatedSortBy,
+    res.locals.user
+  )
     .then((items) => {
       if (res.locals.tokenError) {
         const { tokenError } = res.locals;
@@ -86,6 +93,21 @@ export const postItem = (
   insertItem(body)
     .then((item: Item) => {
       res.status(201).send({ item });
+    })
+    .catch(next);
+};
+
+export const deleteItem = (
+  req: Request<{ item_id: string }, {}>,
+  res: Response<{ item: {} }, ILocals>,
+  next: NextFunction
+) => {
+  const { item_id } = req.params;
+  const { user_id } = res.locals.user;
+
+  removeItem(item_id, user_id)
+    .then((item: {}) => {
+      res.status(204).send({ item });
     })
     .catch(next);
 };

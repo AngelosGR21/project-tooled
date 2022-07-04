@@ -1,4 +1,4 @@
-const password = "$2a$10$FgGM7YYmVe6UYpzB/BtZve8TmmPesfQf5MT9p6LIY77Wl2zSORZG2"
+const password = "$2a$10$2lU3JsgNVq1fRm5GJAhf6.BbpJnqKKD54/5rFPHKBr3RuTvb3kFgO";
 
 export default [
   {
@@ -8,7 +8,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51561,
     long: -0.0769,
-    password
+    password,
   },
   {
     username: "ader68",
