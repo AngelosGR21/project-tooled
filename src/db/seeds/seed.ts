@@ -1,6 +1,6 @@
 import db from "../connection";
 import format from "pg-format";
-import { Data, CategoryData } from "./types-seed";
+import { Data } from "./types-seed";
 
 const seed = async (data: Data) => {
   const { categoryData, commentData, itemData, userData, favouriteData } = data;

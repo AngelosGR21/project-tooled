@@ -1,38 +1,53 @@
 import db from "../db/connection";
 import { CommentBody, ItemBody } from "../__test__/types-test";
+import { UserDetails } from "../types/user.types";
+import { getDistanceAndSort } from "../utils/location";
 
 export const fetchItems = async (
   sort_by: string = "price",
   order: string = "desc",
-  category: string
+  category: string,
+  updatedSortBy: string[] | undefined,
+  user: UserDetails | undefined,
 ) => {
-  const validSortBy = ["price", "rating"];
-  const validOrder = ["asc", "desc"];
-
-  let queryStr = `SELECT * FROM items 
-                  LEFT JOIN categories 
-                  ON categories.category_id = items.category_id`;
-
-  const categoryVal = [];
-
-  if (category) {
-    queryStr += ` WHERE category = $1`;
-    categoryVal.push(category);
-  }
-
-  if (validSortBy.includes(sort_by)) {
-    queryStr += ` ORDER BY ${sort_by}`;
-    if (validOrder.includes(order)) {
-      queryStr += ` ${order}`;
-    } else queryStr += ` DESC`;
-  } else
-    return Promise.reject({
-      status: 400,
-      message: "Invalid sort by",
-    });
-
   try {
+    const validSortBy = updatedSortBy || ["price", "rating"];
+    const validOrder = ["asc", "desc"];
+
+    let queryStr = `SELECT * FROM items 
+                    LEFT JOIN categories 
+                    ON categories.category_id = items.category_id`;
+
+    const categoryVal = [];
+
+    if (category) {
+      queryStr += ` WHERE category = $1`;
+      categoryVal.push(category);
+    }
+
+    if (!validSortBy.includes(sort_by)) {
+      return Promise.reject({
+        status: 400,
+        message: "Invalid sort by"
+      })
+    }
+
+    if (validSortBy.includes(sort_by) && sort_by !== "location") {
+      queryStr += ` ORDER BY ${sort_by}`;
+      if (validOrder.includes(order)) {
+        queryStr += ` ${order}`;
+      } else queryStr += ` DESC`;
+    }
+
     const { rows } = await db.query(queryStr, categoryVal);
+
+
+    if (sort_by === "location" && user !== undefined) {
+      const userLocation = `(${user.lat}, ${user.long})`;
+      const sortedItems = await getDistanceAndSort(userLocation, rows);
+      return sortedItems;
+    }
+
     return rows;
   } catch (error) {
     return Promise.reject(error);
@@ -71,18 +86,25 @@ export const fetchItemCommentById = async (item_id: string) => {
 };
 
 export const insertCommentByItemId = async (
-  { user_id, body }: CommentBody,
-  item_id: string
+  body: string,
+  item_id: string,
+  user_id: number,
 ) => {
-  const commentQueryStr = `
-    INSERT INTO comments (user_id, body, item_id)
-    VALUES ($1, $2, $3)
-    RETURNING user_id, body`;
-  const commentValue = [user_id, body, item_id];
+  try {
+    if (!body) {
+      return Promise.reject({ status: 400, message: "Comment body is missing..." })
+    }
 
-  const { rows } = await db.query(commentQueryStr, commentValue);
-
-  return rows[0];
+    const commentQueryStr = `
+  INSERT INTO comments (user_id, body, item_id)
+  VALUES ($1, $2, $3)
+  RETURNING user_id, body`;
+    const commentValue = [user_id, body, item_id];
+    const { rows } = await db.query(commentQueryStr, commentValue);
+    return rows[0];
+  } catch (e) {
+    return Promise.reject(e);
+  }
 };
 
 export const insertItem = async ({

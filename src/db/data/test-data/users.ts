@@ -1,3 +1,5 @@
+const password = "$2a$10$FgGM7YYmVe6UYpzB/BtZve8TmmPesfQf5MT9p6LIY77Wl2zSORZG2"
+
 export default [
   {
     username: "oxlong123",
@@ -6,7 +8,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51561,
     long: -0.0769,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password
   },
   {
     username: "ader68",
@@ -15,7 +17,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51603,
     long: -0.07351,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password,
   },
   {
     username: "anita54",
@@ -24,7 +26,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51563,
     long: -0.07628,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password,
   },
   {
     username: "bigben123",
@@ -33,7 +35,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51553,
     long: -0.07859,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password,
   },
   {
     username: "rack12",
@@ -42,7 +44,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51517,
     long: -0.07761,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password,
   },
   {
     username: "Haaarry156",
@@ -51,7 +53,7 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.5155,
     long: -0.07681,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password,
   },
   {
     username: "tinkle456",
@@ -60,6 +62,6 @@ export default [
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.5155,
     long: -0.07681,
-    password: "$2a$08$uUN/gDncPImQRrTrvDRKfOaGHECL643MeedF4xkWN8rh1kDb6WnMK",
+    password,
   },
 ];

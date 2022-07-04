@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const password = "$2a$10$FgGM7YYmVe6UYpzB/BtZve8TmmPesfQf5MT9p6LIY77Wl2zSORZG2";
 exports.default = [
     {
         username: "oxlong123",
@@ -7,7 +8,7 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.51561,
         long: -0.0769,
-        password: "password",
+        password
     },
     {
         username: "ader68",
@@ -15,7 +16,7 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.51603,
         long: -0.07351,
-        password: "password",
+        password,
     },
     {
         username: "anita54",
@@ -23,7 +24,7 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.51563,
         long: -0.07628,
-        password: "password",
+        password,
     },
     {
         username: "bigben123",
@@ -31,7 +32,7 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.51553,
         long: -0.07859,
-        password: "password",
+        password,
     },
     {
         username: "rack12",
@@ -39,7 +40,7 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.51517,
         long: -0.07761,
-        password: "password",
+        password,
     },
     {
         username: "Haaarry156",
@@ -47,7 +48,7 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.5155,
         long: -0.07681,
-        password: "password",
+        password,
     },
     {
         username: "tinkle456",
@@ -55,6 +56,6 @@ exports.default = [
         avatar: "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
         lat: 51.5155,
         long: -0.07681,
-        password: "password",
+        password,
     },
 ];

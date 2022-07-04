@@ -16,11 +16,11 @@ const connection_1 = __importDefault(require("../connection"));
 const pg_format_1 = __importDefault(require("pg-format"));
 const seed = (data) => __awaiter(void 0, void 0, void 0, function* () {
     const { categoryData, commentData, itemData, userData, favouriteData } = data;
-    yield connection_1.default.query("DROP TABLE IF EXISTS categories;");
     yield connection_1.default.query("DROP TABLE IF EXISTS comments;");
-    yield connection_1.default.query("DROP TABLE IF EXISTS items;");
-    yield connection_1.default.query("DROP TABLE IF EXISTS users;");
     yield connection_1.default.query("DROP TABLE IF EXISTS favourites;");
+    yield connection_1.default.query("DROP TABLE IF EXISTS items;");
+    yield connection_1.default.query("DROP TABLE IF EXISTS categories;");
+    yield connection_1.default.query("DROP TABLE IF EXISTS users;");
     yield connection_1.default.query(`CREATE TABLE categories (
     category_id SERIAL PRIMARY KEY,
     category VARCHAR NOT NULL

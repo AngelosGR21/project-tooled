@@ -12,10 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fetchAllCategories = void 0;
-const connection_1 = __importDefault(require("../db/connection"));
-const fetchAllCategories = () => __awaiter(void 0, void 0, void 0, function* () {
-    const { rows } = yield connection_1.default.query(`SELECT * FROM categories`);
-    return rows;
+exports.translatePostcodeToCoordinates = void 0;
+const axios_1 = __importDefault(require("axios"));
+const translatePostcodeToCoordinates = (postcode) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const response = yield axios_1.default.get(`https://api.postcodes.io/postcodes/${postcode}`);
+        return {
+            lat: response.data.result.latitude,
+            long: response.data.result.longitude
+        };
+    }
+    catch (err) {
+        const error = Object.assign(Object.assign({}, err.response.data), { message: err.response.data.error });
+        return Promise.reject(error);
+    }
 });
-exports.fetchAllCategories = fetchAllCategories;
+exports.translatePostcodeToCoordinates = translatePostcodeToCoordinates;

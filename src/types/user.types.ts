@@ -1,4 +1,5 @@
 export interface UserDetails {
+    user_id: number;
     username: string;
     lat: string;
     long: string;
@@ -9,5 +10,13 @@ export interface UserDetails {
 
 export interface LoginUser {
     username: string;
+    password: string;
+}
+
+export interface CreatingUser {
+    username: string;
+    postcode: string;
+    name: string;
+    avatar: string;
     password: string;
 }
