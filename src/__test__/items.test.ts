@@ -311,7 +311,7 @@ describe("API: /api/items", () => {
 
   describe("DELETE:  /api/items/:item_id", () => {
     test("204: delete the post", () => {
-      const item_id = 2;
+      const item_id = 1;
 
       return request(app)
         .delete(`/api/items/${item_id}`)
@@ -341,26 +341,26 @@ describe("API: /api/items", () => {
           expect(message).toBe("input is not valid");
         });
     });
-    test("404: responds with error message when item_od does not exist", () => {
-      const comment_id = 999;
+    test("404: responds with error message when item_id does not exist", () => {
+      const item_id = 999;
 
       return request(app)
-        .delete(`/api/comments/${comment_id}`)
+        .delete(`/api/items/${item_id}`)
         .expect(404)
         .set("authorization", `Bearer ${authKey}`)
         .then(({ body: { message } }) => {
-          expect(message).toBe(`invalid endpoint`);
+          expect(message).toBe(`item does not exist`);
         });
     });
-    test("404: responds with error message when item_od does not exist", () => {
-      const comment_id = 999;
+    test("401: responds with error message when creater of item_id does not match user_id", () => {
+      const item_id = 7;
 
       return request(app)
-        .delete(`/api/comments/${comment_id}`)
-        .expect(404)
+        .delete(`/api/items/${item_id}`)
+        .expect(401)
         .set("authorization", `Bearer ${authKey}`)
         .then(({ body: { message } }) => {
-          expect(message).toBe(`invalid endpoint`);
+          expect(message).toBe(`unauthorized request...`);
         });
     });
   });
