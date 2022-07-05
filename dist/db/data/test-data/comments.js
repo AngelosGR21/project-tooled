@@ -21,7 +21,7 @@ exports.default = [
     },
     {
         created_at: new Date(),
-        user_id: 1,
+        user_id: 4,
         body: "The bat snapped in half when I used it",
         item_id: 4,
     },
@@ -40,12 +40,6 @@ exports.default = [
     {
         created_at: new Date(),
         user_id: 7,
-        body: "I got squirted in the eye",
-        item_id: 7,
-    },
-    {
-        created_at: new Date(),
-        user_id: 1,
         body: "I got squirted in the eye",
         item_id: 7,
     },

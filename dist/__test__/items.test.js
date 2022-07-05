@@ -11,7 +11,7 @@ const connection_1 = __importDefault(require("../db/connection"));
 require("jest-sorted");
 afterAll(() => connection_1.default.end());
 beforeEach(() => (0, seed_1.default)(test_data_1.default));
-const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCQybFUzSnNnTlZxMWZSbTVHSkFoZjYuQmJwSm5xS0tENTQvNXJGUEhLQnIzUnVUdmIza0ZnTyIsImlhdCI6MTY1NjkzMjA3MywiZXhwIjoxNjU3MDE4NDczfQ.68Rba-4tXsb2KK6DnEksPNgvrq9qBM05gUN6APTRZi0";
+const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCRGZ0dNN1lZbVZlNlVZcHpCL0J0WnZlOFRtbVBlc2ZRZjVNVDlwNkxJWTc3V2wyelNPUlpHMiIsImlhdCI6MTY1NjkyNzkzNSwiZXhwIjoxNjU3MDE0MzM1fQ.EWi_lAZY8ysp465bGfCxKfNqPmV3fITTVVCstf9FpOs";
 describe("API: /api/items", () => {
     describe("GET /api/items", () => {
         test("200: responds with an items array of items objects (sorted by date in descending order)", () => {
@@ -231,8 +231,8 @@ describe("API: /api/items", () => {
             });
         });
     });
-    describe("GET - errors: /api/items/", () => {
-        test("400: responds with bad request message when passed invalid sort_by", () => {
+    describe('GET - errors: /api/items/', () => {
+        test('400: responds with bad request message when passed invalid sort_by', () => {
             return (0, supertest_1.default)(app_1.default)
                 .get("/api/items?sort_by=oranges")
                 .expect(400)
@@ -282,56 +282,6 @@ describe("API: /api/items", () => {
                 .expect(404)
                 .then(({ body: { message } }) => {
                 expect(message).toBe(`item does not exist`);
-            });
-        });
-    });
-    describe("DELETE:  /api/items/:item_id", () => {
-        test("204: delete the post", () => {
-            const item_id = 1;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}`)
-                .set("authorization", `Bearer ${authKey}`)
-                .expect(204);
-        });
-    });
-    describe("DELETE - error: /api/items/:item_id", () => {
-        test("401: responds with error message when item_id is unauthorized", () => {
-            const item_id = 1;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}`)
-                .expect(401)
-                .then(({ body: { message } }) => {
-                expect(message).toBe("you are not logged in");
-            });
-        });
-        test("400: responds with error message when item_id is a string", () => {
-            const item_id = "invalid";
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}`)
-                .expect(400)
-                .set("authorization", `Bearer ${authKey}`)
-                .then(({ body: { message } }) => {
-                expect(message).toBe("input is not valid");
-            });
-        });
-        test("404: responds with error message when item_id does not exist", () => {
-            const item_id = 999;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}`)
-                .expect(404)
-                .set("authorization", `Bearer ${authKey}`)
-                .then(({ body: { message } }) => {
-                expect(message).toBe(`item does not exist`);
-            });
-        });
-        test("401: responds with error message when creater of item_id does not match user_id", () => {
-            const item_id = 7;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}`)
-                .expect(401)
-                .set("authorization", `Bearer ${authKey}`)
-                .then(({ body: { message } }) => {
-                expect(message).toBe(`unauthorized request...`);
             });
         });
     });
@@ -445,61 +395,6 @@ describe("API: /api/items", () => {
                 .expect(404)
                 .then(({ body: { message } }) => {
                 expect(message).toBe("input does not exist");
-            });
-        });
-    });
-    describe("DELETE:  /api/items/:item_id/:comment_id", () => {
-        test("204: delete the post", () => {
-            const item_id = 4;
-            const comment_id = 4;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}/${comment_id}`)
-                .set("authorization", `Bearer ${authKey}`)
-                .expect(204);
-        });
-    });
-    describe("DELETE - error: /api/items/:item_id/:comment_id", () => {
-        test("401: responds with error message when item_id & comment_id is unauthorized", () => {
-            const item_id = 4;
-            const comment_id = 4;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}/${comment_id}`)
-                .expect(401)
-                .then(({ body: { message } }) => {
-                expect(message).toBe("you are not logged in");
-            });
-        });
-        test("400: responds with error message when comment_id is a string", () => {
-            const item_id = 4;
-            const comment_id = "invalid";
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}/${comment_id}`)
-                .expect(400)
-                .set("authorization", `Bearer ${authKey}`)
-                .then(({ body: { message } }) => {
-                expect(message).toBe("input is not valid");
-            });
-        });
-        test("404: responds with error message when comment_id does not exist", () => {
-            const item_id = 4;
-            const comment_id = 999;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}/${comment_id}`)
-                .expect(404)
-                .set("authorization", `Bearer ${authKey}`)
-                .then(({ body: { message } }) => {
-                expect(message).toBe(`comment does not exist`);
-            });
-        });
-        test("401: responds with error message when creater of item_id does not match user_id", () => {
-            const item_id = 4;
-            const comment_id = 5;
-            return (0, supertest_1.default)(app_1.default)
-                .delete(`/api/items/${item_id}/${comment_id}`)
-                .expect(401)
-                .set("authorization", `Bearer ${authKey}`)
-                .then(({ body: { message } }) => {
-                expect(message).toBe(`unauthorized request...`);
             });
         });
     });

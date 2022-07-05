@@ -549,4 +549,113 @@ describe("API: /api/items", () => {
         });
     });
   });
+
+  describe("PATCH: /api/items/:item_id", () => {
+    test("200: responds with a rating incrementing by inc_rating", () => {
+      const item_id = 2;
+      const inc_rating = { inc_rating: 5 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .send(inc_rating)
+        .set("authorization", `Bearer ${authKey}`)
+        .expect(200)
+        .then(({ body: { item } }) => {
+          expect(item.rating).toBe(5);
+          expect(item.item_id).toBe(2);
+        });
+    });
+  });
+  describe("PATCH - errors: /api/items/:item_id", () => {
+    test("401: responds with a error message when unauthorised", () => {
+      const item_id = 2;
+      const inc_rating = { inc_rating: 5 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .send(inc_rating)
+        .expect(401)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("you are not logged in");
+        });
+    });
+    test("400: responds with an error message when passed an endpoint with an incorrect data type", () => {
+      const item_id = 2;
+      const inc_rating = { inc_rating: NaN };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .expect(400)
+        .set("authorization", `Bearer ${authKey}`)
+        .send(inc_rating)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is missing");
+        });
+    });
+    test("400: responds with an error message when passed an endpoint where inc_vote key missing", () => {
+      const item_id = 1;
+      const inc_rating = { invalid_rating: 5 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .expect(400)
+        .set("authorization", `Bearer ${authKey}`)
+        .send(inc_rating)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("input is missing");
+        });
+    });
+    test("404: responds with an error message when passed an endpoint with correct data type but does not exist", () => {
+      const item_id = 999;
+      const inc_rating = { inc_rating: 5 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .expect(404)
+        .set("authorization", `Bearer ${authKey}`)
+        .send(inc_rating)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`item does not exist`);
+        });
+    });
+    test("400: responds with an error message when passed rating is greater than 5", () => {
+      const item_id = 2;
+      const inc_rating = { inc_rating: 9 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .expect(400)
+        .set("authorization", `Bearer ${authKey}`)
+        .send(inc_rating)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`rate between 1-5 stars`);
+        });
+    });
+    test("400: responds with an error message when passed rating is less than 0", () => {
+      const item_id = 2;
+      const inc_rating = { inc_rating: -2 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .expect(400)
+        .set("authorization", `Bearer ${authKey}`)
+        .send(inc_rating)
+        .then(({ body: { message } }) => {
+          expect(message).toBe(`rate between 1-5 stars`);
+        });
+    });
+    test("401: responds with error message when creater of item gives self rating", () => {
+      const item_id = 1;
+      const inc_rating = { inc_rating: 3 };
+
+      return request(app)
+        .patch(`/api/items/${item_id}`)
+        .expect(401)
+        .set("authorization", `Bearer ${authKey}`)
+        .send(inc_rating)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("unauthorized request...");
+        });
+    });
+  });
 });
