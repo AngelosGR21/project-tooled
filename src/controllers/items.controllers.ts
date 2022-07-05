@@ -150,8 +150,5 @@ export const patchItemById = (
     .then((item: Item) => {
       res.status(200).send({ item });
     })
-    .catch((e) => {
-      console.log(e);
-      next(e);
-    });
+    .catch(next);
 };

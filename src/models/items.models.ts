@@ -238,18 +238,17 @@ export const updateItemById = async (
   const itemValue = [inc_rating, item_id];
 
   const { rows } = await db.query(itemQueryStr, itemValue);
-  /////// try verify that hes not self likign
-  // console.log(rows[0].user_id);
-  // if (user_id !== rows[0].user_id) {
-  //   return Promise.reject({
-  //     status: 401,
-  //     message: "unauthorized request...",
-  //   });
-  // }
+
   if (!rows.length) {
     return Promise.reject({
       status: 404,
       message: `item does not exist`,
+    });
+  }
+  if (user_id === rows[0].user_id) {
+    return Promise.reject({
+      status: 401,
+      message: "unauthorized request...",
     });
   }
   return rows[0];

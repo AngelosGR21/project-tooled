@@ -645,16 +645,16 @@ describe("API: /api/items", () => {
         });
     });
     test("401: responds with error message when creater of item gives self rating", () => {
-      const item_id = 2;
+      const item_id = 1;
       const inc_rating = { inc_rating: 3 };
 
       return request(app)
         .patch(`/api/items/${item_id}`)
-        .expect(400)
+        .expect(401)
         .set("authorization", `Bearer ${authKey}`)
         .send(inc_rating)
         .then(({ body: { message } }) => {
-          expect(message).toBe(`Can not give self rating`);
+          expect(message).toBe("unauthorized request...");
         });
     });
   });
