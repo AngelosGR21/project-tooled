@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.postItem = exports.postCommentByItemId = exports.getItemCommentById = exports.getItemById = exports.getItems = void 0;
+exports.deleteComment = exports.deleteItem = exports.postItem = exports.postCommentByItemId = exports.getItemCommentById = exports.getItemById = exports.getItems = void 0;
 const items_models_1 = require("../models/items.models");
 const getItems = (req, res, next) => {
     const { sort_by, order, category } = req.query;
@@ -53,3 +53,23 @@ const postItem = (req, res, next) => {
         .catch(next);
 };
 exports.postItem = postItem;
+const deleteItem = (req, res, next) => {
+    const { item_id } = req.params;
+    const { user_id } = res.locals.user;
+    (0, items_models_1.removeItem)(item_id, user_id)
+        .then((item) => {
+        res.status(204).send({ item });
+    })
+        .catch(next);
+};
+exports.deleteItem = deleteItem;
+const deleteComment = (req, res, next) => {
+    const { comment_id, item_id } = req.params;
+    const { user_id } = res.locals.user;
+    (0, items_models_1.removeComment)(comment_id, item_id, user_id)
+        .then((comment) => {
+        res.status(204).send({ comment });
+    })
+        .catch(next);
+};
+exports.deleteComment = deleteComment;
