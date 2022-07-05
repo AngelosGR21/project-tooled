@@ -5,6 +5,7 @@ import {
   insertCommentByItemId,
   insertItem,
   removeItem,
+  removeComment,
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
 import { Comment, CommentBody, Item, ItemBody } from "../__test__/types-test";
@@ -108,6 +109,21 @@ export const deleteItem = (
   removeItem(item_id, user_id)
     .then((item: {}) => {
       res.status(204).send({ item });
+    })
+    .catch(next);
+};
+
+export const deleteComment = (
+  req: Request<{ comment_id: string; item_id: string }, {}>,
+  res: Response<{ comment: {} }, ILocals>,
+  next: NextFunction
+) => {
+  const { comment_id, item_id } = req.params;
+  const { user_id } = res.locals.user;
+
+  removeComment(comment_id, item_id, user_id)
+    .then((comment: {}) => {
+      res.status(204).send({ comment });
     })
     .catch(next);
 };

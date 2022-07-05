@@ -7,6 +7,7 @@ import {
   postItem,
   postCommentByItemId,
   deleteItem,
+  deleteComment,
 } from "../controllers/items.controllers";
 
 import { locationAuth, postAuth } from "../middleware/authorization.middleware";
@@ -20,5 +21,7 @@ itemsRouter
   .route("/:item_id/comments")
   .get(getItemCommentById)
   .post(postAuth, postCommentByItemId);
+
+itemsRouter.route("/:item_id/:comment_id").delete(postAuth, deleteComment);
 
 export default itemsRouter;

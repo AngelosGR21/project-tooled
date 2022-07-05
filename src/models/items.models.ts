@@ -1,5 +1,5 @@
 import db from "../db/connection";
-import { CommentBody, ItemBody } from "../__test__/types-test";
+import { Comment, CommentBody, ItemBody } from "../__test__/types-test";
 import { UserDetails } from "../types/user.types";
 import { getDistanceAndSort } from "../utils/location";
 
@@ -171,6 +171,44 @@ export const removeItem = async (item_id: string, user_id: number) => {
   const removeItemValue = [item_id];
 
   const { rows } = await db.query(removeItemQueryStr, removeItemValue);
+
+  return rows;
+};
+
+export const removeComment = async (
+  comment_id: string,
+  item_id: string,
+  user_id: number
+) => {
+  const removeCommentQueryStr = `
+  DELETE FROM comments
+  WHERE comment_id = $1`;
+  const removeCommentValue = [comment_id];
+
+  if (comment_id) {
+    const commentQueryStr = `
+    SELECT comment_id,user_id,item_id
+    FROM comments
+    WHERE comment_id = $1`;
+    const commentValue = [comment_id];
+
+    const { rows } = await db.query(commentQueryStr, commentValue);
+
+    if (!rows.length) {
+      return Promise.reject({
+        status: 404,
+        message: `comment does not exist`,
+      });
+    }
+    if (user_id !== rows[0].user_id) {
+      return Promise.reject({
+        status: 401,
+        message: "unauthorized request...",
+      });
+    }
+  }
+
+  const { rows } = await db.query(removeCommentQueryStr, removeCommentValue);
 
   return rows;
 };
