@@ -501,7 +501,7 @@ describe("API: /api/items", () => {
         .expect(204);
     });
   });
-  describe.only("DELETE - error: /api/items/:item_id", () => {
+  describe("DELETE - error: /api/items/:item_id", () => {
     test("401: responds with error message when item_id & comment_id is unauthorized", () => {
       const item_id = 4;
       const comment_id = 4;
