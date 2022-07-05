@@ -1,5 +1,10 @@
 import db from "../db/connection";
-import { Comment, CommentBody, ItemBody } from "../__test__/types-test";
+import {
+  Comment,
+  CommentBody,
+  incRating,
+  ItemBody,
+} from "../__test__/types-test";
 import { UserDetails } from "../types/user.types";
 import { getDistanceAndSort } from "../utils/location";
 
@@ -55,9 +60,9 @@ export const fetchItems = async (
 
 export const fetchItemById = async (item_id: string) => {
   const itemQueryStr = `
-    SELECT * 
-    FROM items
-    WHERE item_id = $1
+  SELECT * 
+  FROM items
+  WHERE item_id = $1
 `;
   const itemValue = [item_id];
   const { rows } = await db.query(itemQueryStr, itemValue);
@@ -98,9 +103,9 @@ export const insertCommentByItemId = async (
     }
 
     const commentQueryStr = `
-  INSERT INTO comments (user_id, body, item_id)
-  VALUES ($1, $2, $3)
-  RETURNING user_id, body`;
+      INSERT INTO comments (user_id, body, item_id)
+      VALUES ($1, $2, $3)
+      RETURNING user_id, body`;
     const commentValue = [user_id, body, item_id];
     const { rows } = await db.query(commentQueryStr, commentValue);
     return rows[0];
@@ -121,8 +126,8 @@ export const insertItem = async ({
   long,
 }: ItemBody) => {
   const itemQueryStr = `
-  INSERT INTO items (name, price, body, user_id, category_id, item_image, is_available, lat, long ) 
-  VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9 ) RETURNING *`;
+    INSERT INTO items (name, price, body, user_id, category_id, item_image, is_available, lat, long ) 
+    VALUES  ($1, $2, $3, $4, $5, $6, $7, $8, $9 ) RETURNING *`;
   const itemValue = [
     name,
     price,
@@ -150,15 +155,15 @@ export const removeItem = async (item_id: string, user_id: number) => {
   }
 
   const removeCommentQueryStr = `
-    DELETE FROM comments
-    WHERE item_id = $1`;
+  DELETE FROM comments
+  WHERE item_id = $1`;
   const removeCommentValue = [item_id];
 
   const commentQuery = db.query(removeCommentQueryStr, removeCommentValue);
 
   const removeFavQueryStr = `
-    DELETE FROM favourites
-    WHERE item_id = $1`;
+  DELETE FROM favourites
+  WHERE item_id = $1`;
   const removeFavValue = [item_id];
 
   const favouritesQuery = db.query(removeFavQueryStr, removeFavValue);
@@ -166,8 +171,8 @@ export const removeItem = async (item_id: string, user_id: number) => {
   await Promise.all([commentQuery, favouritesQuery]);
 
   const removeItemQueryStr = `
-    DELETE FROM items
-    WHERE item_id = $1`;
+  DELETE FROM items
+  WHERE item_id = $1`;
   const removeItemValue = [item_id];
 
   const { rows } = await db.query(removeItemQueryStr, removeItemValue);
@@ -181,15 +186,15 @@ export const removeComment = async (
   user_id: number
 ) => {
   const removeCommentQueryStr = `
-  DELETE FROM comments
-  WHERE comment_id = $1`;
+    DELETE FROM comments
+    WHERE comment_id = $1`;
   const removeCommentValue = [comment_id];
 
   if (comment_id) {
     const commentQueryStr = `
-    SELECT comment_id,user_id,item_id
-    FROM comments
-    WHERE comment_id = $1`;
+      SELECT comment_id,user_id,item_id
+      FROM comments
+      WHERE comment_id = $1`;
     const commentValue = [comment_id];
 
     const { rows } = await db.query(commentQueryStr, commentValue);
@@ -211,4 +216,41 @@ export const removeComment = async (
   const { rows } = await db.query(removeCommentQueryStr, removeCommentValue);
 
   return rows;
+};
+
+export const updateItemById = async (
+  item_id: string,
+  { inc_rating }: incRating,
+  user_id: number
+) => {
+  if (+inc_rating > 5 || +inc_rating < 0) {
+    return Promise.reject({
+      status: 400,
+      message: `rate between 1-5 stars`,
+    });
+  }
+
+  const itemQueryStr = `
+  UPDATE items
+  SET rating = rating + $1
+  WHERE item_id = $2
+  RETURNING *`;
+  const itemValue = [inc_rating, item_id];
+
+  const { rows } = await db.query(itemQueryStr, itemValue);
+  /////// try verify that hes not self likign
+  // console.log(rows[0].user_id);
+  // if (user_id !== rows[0].user_id) {
+  //   return Promise.reject({
+  //     status: 401,
+  //     message: "unauthorized request...",
+  //   });
+  // }
+  if (!rows.length) {
+    return Promise.reject({
+      status: 404,
+      message: `item does not exist`,
+    });
+  }
+  return rows[0];
 };

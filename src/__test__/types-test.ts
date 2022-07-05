@@ -39,4 +39,9 @@ export type ItemBody = {
   is_available: boolean;
   lat: number;
   long: number;
+  rating: number;
+};
+
+export type incRating = {
+  inc_rating: string;
 };

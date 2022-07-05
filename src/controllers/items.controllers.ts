@@ -6,9 +6,16 @@ import {
   insertItem,
   removeItem,
   removeComment,
+  updateItemById,
 } from "../models/items.models";
 import { Request, Response, NextFunction } from "express";
-import { Comment, CommentBody, Item, ItemBody } from "../__test__/types-test";
+import {
+  Comment,
+  CommentBody,
+  incRating,
+  Item,
+  ItemBody,
+} from "../__test__/types-test";
 import { ILocals } from "../types/items.types";
 
 export const getItems = (
@@ -126,4 +133,25 @@ export const deleteComment = (
       res.status(204).send({ comment });
     })
     .catch(next);
+};
+
+export const patchItemById = (
+  req: Request<{ item_id: string }, {}, incRating>,
+  res: Response<{ item: Item }>,
+  next: NextFunction
+) => {
+  const { item_id } = req.params;
+  const { user_id } = res.locals.user;
+
+  const { body } = req;
+  console.log(body);
+
+  updateItemById(item_id, body, user_id)
+    .then((item: Item) => {
+      res.status(200).send({ item });
+    })
+    .catch((e) => {
+      console.log(e);
+      next(e);
+    });
 };
