@@ -1,7 +1,7 @@
 export default [
   {
     name: "Drill",
-    price: 2000,
+    price: 20,
     body: "Powerful cordless combi drill with 2 mechanical gears and all-metal gear construction to ensure high transmission durability. Variable speed trigger covers a wide range of drilling, driving and hammer applications. Other features include 16 adjustable torque settings plus drill mode, a single sleeve keyless chuck to enable easy bit removal and a soft-grip ergonomic handle. Supplied in a moulded plastic case.",
     user_id: 1,
     category_id: 1,
@@ -14,7 +14,7 @@ export default [
   },
   {
     name: "Lawn mower",
-    price: 3500,
+    price: 35,
     body: "Powered by a STIGA ST140 OHV Autochoke 139cc engine. Easy-to-use mower with a 46cm cutting width, 6 cutting heights and a mulching plug. Clippings are collected into a large 60Ltr grass bag. An integrated front bumper handle and camlock adjusters make moving or folding the handles for storage as quick and easy as possible. Suitable for lawns up to 1500m².",
     user_id: 2,
     category_id: 2,
@@ -28,7 +28,7 @@ export default [
 
   {
     name: "Apple Macbook Pro",
-    price: 20000,
+    price: 200,
     body: "The new M2 chip makes the 13‑inch MacBook Pro more capable than ever. The same compact design supports up to 20 hours of battery life1 and an active cooling system to sustain enhanced performance. Featuring a brilliant Retina display, a FaceTime HD camera and studio‑quality mics, it’s our most portable pro laptop.",
     user_id: 3,
     category_id: 3,
@@ -41,7 +41,7 @@ export default [
   },
   {
     name: "Cricket Bat",
-    price: 3000,
+    price: 30,
     body: "Carefully selected from Premium players grade willow",
     user_id: 4,
     category_id: 4,
@@ -54,7 +54,7 @@ export default [
   },
   {
     name: "Violin",
-    price: 2000,
+    price: 20,
     body: "Constructed from high quality tone woods. Easily change hand positions thanks to smooth fingerboard",
     user_id: 5,
     category_id: 5,
@@ -67,7 +67,7 @@ export default [
   },
   {
     name: "Car",
-    price: 20000,
+    price: 2000,
     body: "Stylish and fast family car",
     user_id: 6,
     category_id: 6,
@@ -80,7 +80,7 @@ export default [
   },
   {
     name: "Water gun",
-    price: 1500,
+    price: 15,
     body: "an absurdly powerful high-tech beast of a water gun that will change your game.",
     user_id: 7,
     category_id: 7,
