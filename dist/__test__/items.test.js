@@ -11,7 +11,7 @@ const connection_1 = __importDefault(require("../db/connection"));
 require("jest-sorted");
 afterAll(() => connection_1.default.end());
 beforeEach(() => (0, seed_1.default)(test_data_1.default));
-const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCQybFUzSnNnTlZxMWZSbTVHSkFoZjYuQmJwSm5xS0tENTQvNXJGUEhLQnIzUnVUdmIza0ZnTyIsImlhdCI6MTY1NjkzMjA3MywiZXhwIjoxNjU3MDE4NDczfQ.68Rba-4tXsb2KK6DnEksPNgvrq9qBM05gUN6APTRZi0";
+const authKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCQybFUzSnNnTlZxMWZSbTVHSkFoZjYuQmJwSm5xS0tENTQvNXJGUEhLQnIzUnVUdmIza0ZnTyIsImlhdCI6MTY1NzEwMTU1NiwiZXhwIjoxNjU3MTg3OTU2fQ.ew3ocoQadon17jr1Vsdvp4HTC0t5XGxGJwdCD7yyfZY";
 describe("API: /api/items", () => {
     describe("GET /api/items", () => {
         test("200: responds with an items array of items objects (sorted by date in descending order)", () => {
