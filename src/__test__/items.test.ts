@@ -130,6 +130,7 @@ describe("API: /api/items", () => {
       return request(app)
         .post(`/api/items`)
         .send(newItem)
+        .set("authorization", `Bearer ${authKey}`)
         .expect(201)
         .then(({ body: { item } }) => {
           expect(item).toEqual(newItem);
@@ -137,9 +138,32 @@ describe("API: /api/items", () => {
     });
   });
   describe("POST - errors: /api/items", () => {
+    test("401: responds with error message when item is unauthorised", () => {
+      const newItem = {
+        item_id: 8,
+        name: "Gardening Mower",
+        price: 1900,
+        body: "This tool is specificity used for garden and has lasted me years.",
+        item_image: "none",
+        created_at: expect.any(String),
+        rating: 0,
+        is_available: true,
+        lat: "51.51561",
+        long: "-0.0769",
+        user_id: 7,
+        category_id: 7,
+      };
+      return request(app)
+        .post(`/api/items`)
+        .send(newItem)
+        .expect(401)
+        .then(({ body: { message } }) => {
+          expect(message).toBe("you are not logged in");
+        });
+    });
     test("400: responds with error message when body does not contain mandatory keys ", () => {
       const newItem = {
-        not_item_id: 88888,
+        not_item_id: 888,
         not_name: "Gardening Mower",
         not_price: 1900,
         not_body:
@@ -157,6 +181,7 @@ describe("API: /api/items", () => {
       return request(app)
         .post(`/api/items`)
         .send(newItem)
+        .set("authorization", `Bearer ${authKey}`)
         .expect(400)
         .then(({ body: { message } }) => {
           expect(message).toBe("input is missing");
@@ -181,6 +206,7 @@ describe("API: /api/items", () => {
       return request(app)
         .post(`/api/items1`)
         .send(newItem)
+        .set("authorization", `Bearer ${authKey}`)
         .expect(404)
         .then(({ body: { message } }) => {
           expect(message).toBe("invalid endpoint");
@@ -204,6 +230,7 @@ describe("API: /api/items", () => {
       return request(app)
         .post(`/api/items`)
         .send(newItem)
+        .set("authorization", `Bearer ${authKey}`)
         .expect(404)
         .then(({ body: { message } }) => {
           expect(message).toBe("input does not exist");
@@ -272,10 +299,11 @@ describe("API: /api/items", () => {
             expect.objectContaining({
               item_id: 1,
               name: "Drill",
-              price: 2000,
+              price: 20,
               body: "Powerful cordless combi drill with 2 mechanical gears and all-metal gear construction to ensure high transmission durability. Variable speed trigger covers a wide range of drilling, driving and hammer applications. Other features include 16 adjustable torque settings plus drill mode, a single sleeve keyless chuck to enable easy bit removal and a soft-grip ergonomic handle. Supplied in a moulded plastic case.",
               user_id: 1,
               category_id: 1,
+              created_at: expect.any(String),
               item_image:
                 "https://media.istockphoto.com/photos/cordless-power-drill-picture-id184290460?k=20&m=184290460&s=612x612&w=0&h=2SPZtNwffX2rudiiftl0UZzdE5ksoqhGeR7yzIJFDaM=",
 
