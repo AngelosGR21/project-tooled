@@ -19,7 +19,7 @@ export default [
     user_id: 2,
     category_id: 2,
     item_image:
-      "https://media.istockphoto.com/photos/man-using-a-lawn-mower-in-his-back-yard-picture-id1096126898?s=612x612",
+      "https://images.unsplash.com/photo-1608101854678-b45ad1d25556?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=689&q=80",
     created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51603,
@@ -28,12 +28,12 @@ export default [
 
   {
     name: "Apple Macbook Pro",
-    price: 200,
+    price: 20,
     body: "The new M2 chip makes the 13‑inch MacBook Pro more capable than ever. The same compact design supports up to 20 hours of battery life1 and an active cooling system to sustain enhanced performance. Featuring a brilliant Retina display, a FaceTime HD camera and studio‑quality mics, it’s our most portable pro laptop.",
     user_id: 3,
     category_id: 3,
     item_image:
-      "https://media.istockphoto.com/photos/computer-screen-showing-apple-event-logo-2020-on-the-screen-picture-id1283765199?s=612x612",
+      "https://images.unsplash.com/photo-1565630916779-e303be97b6f5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
     created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51563,
@@ -41,12 +41,12 @@ export default [
   },
   {
     name: "Cricket Bat",
-    price: 30,
+    price: 15,
     body: "Carefully selected from Premium players grade willow",
     user_id: 4,
     category_id: 4,
     item_image:
-      "https://media.istockphoto.com/photos/wooden-cricket-bat-and-ball-on-a-white-background-picture-id505125296?s=612x612",
+      "https://images.unsplash.com/photo-1593341646647-75b32930e4a1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80",
     created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51553,
@@ -54,12 +54,12 @@ export default [
   },
   {
     name: "Violin",
-    price: 20,
+    price: 10,
     body: "Constructed from high quality tone woods. Easily change hand positions thanks to smooth fingerboard",
     user_id: 5,
     category_id: 5,
     item_image:
-      "https://media.istockphoto.com/photos/single-wooden-cello-on-a-white-background-picture-id95655137?s=612x612",
+      "https://images.unsplash.com/photo-1558556405-3071bd8d3ee6?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8OXx8dmlvbGlufGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
     created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.51517,
@@ -67,12 +67,12 @@ export default [
   },
   {
     name: "Car",
-    price: 2000,
+    price: 80,
     body: "Stylish and fast family car",
     user_id: 6,
     category_id: 6,
     item_image:
-      "https://media.istockphoto.com/photos/volkswagen-polo-gti-plus-in-flash-red-paint-picture-id1227424903?s=612x612",
+      "https://images.unsplash.com/photo-1541443131876-44b03de101c5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
     created_at: new Date(1610964101251),
     is_available: true,
     lat: 51.5155,
