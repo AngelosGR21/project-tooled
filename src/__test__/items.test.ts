@@ -10,7 +10,7 @@ afterAll(() => db.end());
 beforeEach(() => seed(testData));
 
 const authKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCQybFUzSnNnTlZxMWZSbTVHSkFoZjYuQmJwSm5xS0tENTQvNXJGUEhLQnIzUnVUdmIza0ZnTyIsImlhdCI6MTY1NjkzMjA3MywiZXhwIjoxNjU3MDE4NDczfQ.68Rba-4tXsb2KK6DnEksPNgvrq9qBM05gUN6APTRZi0";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im94bG9uZzEyMyIsIm5hbWUiOiJNaWtlIE94bG9uZyIsImF2YXRhciI6Imh0dHBzOi8vbWVkaWEuaXN0b2NrcGhvdG8uY29tL3Bob3Rvcy9taWRkbGUtYWdlZC13aGl0ZS1tYWxlLWNyZWF0aXZlLWluLWNhc3VhbC1vZmZpY2UtbG91bmdlLWFyZWEtbG9va3MtdG8tcGljdHVyZS1pZDExNDY0Nzg3OTg_cz02MTJ4NjEyIiwiYXZlcmFnZV9yZXZpZXciOjAsImxhdCI6IjUxLjUxNTYxIiwibG9uZyI6Ii0wLjA3NjkiLCJwYXNzd29yZCI6IiQyYSQxMCQybFUzSnNnTlZxMWZSbTVHSkFoZjYuQmJwSm5xS0tENTQvNXJGUEhLQnIzUnVUdmIza0ZnTyIsImlhdCI6MTY1NzE4Mzg4MiwiZXhwIjoxNjU3MjcwMjgyfQ.j8AuO6SvDkhP2qAxnppdXJMh87O8fj4x6zOLUhht54g";
 
 describe("API: /api/items", () => {
   describe("GET /api/items", () => {
@@ -616,32 +616,6 @@ describe("API: /api/items", () => {
         .send(inc_rating)
         .then(({ body: { message } }) => {
           expect(message).toBe(`item does not exist`);
-        });
-    });
-    test("400: responds with an error message when passed rating is greater than 5", () => {
-      const item_id = 2;
-      const inc_rating = { inc_rating: 9 };
-
-      return request(app)
-        .patch(`/api/items/${item_id}`)
-        .expect(400)
-        .set("authorization", `Bearer ${authKey}`)
-        .send(inc_rating)
-        .then(({ body: { message } }) => {
-          expect(message).toBe(`rate between 1-5 stars`);
-        });
-    });
-    test("400: responds with an error message when passed rating is less than 0", () => {
-      const item_id = 2;
-      const inc_rating = { inc_rating: -2 };
-
-      return request(app)
-        .patch(`/api/items/${item_id}`)
-        .expect(400)
-        .set("authorization", `Bearer ${authKey}`)
-        .send(inc_rating)
-        .then(({ body: { message } }) => {
-          expect(message).toBe(`rate between 1-5 stars`);
         });
     });
     test("401: responds with error message when creater of item gives self rating", () => {

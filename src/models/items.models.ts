@@ -223,13 +223,6 @@ export const updateItemById = async (
   { inc_rating }: incRating,
   user_id: number
 ) => {
-  if (+inc_rating > 5 || +inc_rating < 0) {
-    return Promise.reject({
-      status: 400,
-      message: `rate between 1-5 stars`,
-    });
-  }
-
   const itemQueryStr = `
   UPDATE items
   SET rating = rating + $1
