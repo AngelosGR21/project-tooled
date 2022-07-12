@@ -3,7 +3,7 @@ const password = "$2a$10$2lU3JsgNVq1fRm5GJAhf6.BbpJnqKKD54/5rFPHKBr3RuTvb3kFgO";
 export default [
   {
     username: "oxlong123",
-    name: "Mike Oxlong",
+    name: "Bob Dudley",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51561,
@@ -12,7 +12,7 @@ export default [
   },
   {
     username: "ader68",
-    name: "Ader Titsoff",
+    name: "Kristi Zimmerman",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51603,
@@ -21,7 +21,7 @@ export default [
   },
   {
     username: "anita54",
-    name: "Anita Dickenme",
+    name: "Anita Morton",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51563,
@@ -30,7 +30,7 @@ export default [
   },
   {
     username: "bigben123",
-    name: "Ben Derhover",
+    name: "Jayson Lennon",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51553,
@@ -39,7 +39,7 @@ export default [
   },
   {
     username: "rack12",
-    name: "C. Mike Rack",
+    name: "Amna Glass",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.51517,
@@ -48,7 +48,7 @@ export default [
   },
   {
     username: "Haaarry156",
-    name: "Harry Cox",
+    name: "Humaira Ruiz",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.5155,
@@ -57,7 +57,7 @@ export default [
   },
   {
     username: "tinkle456",
-    name: "Ivana Tinkle",
+    name: "Eryn Golden",
     avatar:
       "https://media.istockphoto.com/photos/middle-aged-white-male-creative-in-casual-office-lounge-area-looks-to-picture-id1146478798?s=612x612",
     lat: 51.5155,
